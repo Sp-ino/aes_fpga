@@ -68,7 +68,7 @@ begin
         if rising_edge(i_ck) then
             if i_rst = '1' then
                 r_addrkey_out <= (others => (others => (others => '0')));
-            elsif i_enable = '1' then
+            else
                 for idx_r in n_rows - 1 downto 0 loop
                     for idx_c in n_cols - 1 downto 0 loop
                         r_addrkey_out(idx_r)(idx_c) <= w_in_bytes(idx_r)(idx_c) xor key(idx_r)(idx_c);

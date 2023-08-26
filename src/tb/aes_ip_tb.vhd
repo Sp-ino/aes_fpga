@@ -82,17 +82,18 @@ begin
         wait for tck/2;
         reset <= '1';
         wait for 2*tck;
+        reset <= '0';
         enable <= '1';
         tin <= std_logic_vector(to_unsigned(in2, 128));
-        wait for 3*tck;
+        wait for tck;
         enable <= '0';
-        reset <= '0';
+        wait for 4*tck;
         
         tin <= std_logic_vector(to_unsigned(in1, 128));
         enable <= '1';
-        wait for tck/2;
-        wait for 3*tck;
+        wait for tck;
         enable <= '0';
+        wait for 4*tck;
 
         assert true report "End of testbench reached!" severity failure;
     end process test_sig_gen;
