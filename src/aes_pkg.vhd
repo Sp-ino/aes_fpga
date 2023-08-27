@@ -36,7 +36,7 @@ package aes_pkg is
         x"8c",	x"a1",	x"89",	x"0d",	x"bf",	x"e6",	x"42",	x"68",	x"41",	x"99",	x"2d",	x"0f",	x"b0",	x"54",	x"bb",	x"16"
     );
     
-    type interface_states is (idle, save, reset_count);
+    type interface_states is (idle, save, pause, reset_count);
 
     function in_conversion(tin: std_logic_vector (msg_len - 1 downto 0)) return aes_matrix;    
     function out_conversion(out_bytes: aes_matrix) return std_logic_vector;

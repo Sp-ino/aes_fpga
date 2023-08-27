@@ -4,7 +4,7 @@ use ieee.std_logic_1164.all;
 use xil_defaultlib.aes_pkg.all;
 
 
-entity interface_ip_wrapper is
+entity deserializer_ip_wrapper is
     port (
         i_byte_ready : in std_logic;
         i_byte : in std_logic_vector (byte_len - 1 downto 0);
@@ -14,12 +14,12 @@ entity interface_ip_wrapper is
         o_data_seen : out std_logic;
         o_word_ready : out std_logic
     );
-end interface_ip_wrapper;
+end deserializer_ip_wrapper;
 
 
-architecture Structure of interface_ip_wrapper is
+architecture Structure of deserializer_ip_wrapper is
 
-    component interface_ip is
+    component deserializer_ip is
     port (
         i_byte_ready : in std_logic;
         i_byte : in std_logic_vector (byte_len - 1 downto 0);
@@ -33,7 +33,7 @@ architecture Structure of interface_ip_wrapper is
 
 begin
 
-    interf: interface_ip
+    interf: deserializer_ip
     port map (
         i_byte_ready => i_byte_ready,
         i_byte => i_byte,

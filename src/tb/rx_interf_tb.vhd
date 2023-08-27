@@ -40,7 +40,7 @@ end tb;
 
 architecture Behavioral of tb is
 
-    component rx_interface_wrapper is
+    component receiver_wrapper is
     port (
         i_ckin : in std_logic;
         i_rst : in std_logic;
@@ -62,12 +62,11 @@ architecture Behavioral of tb is
     signal rst: std_logic;
     signal rx: std_logic;
     signal data_ready: std_logic;
-    signal data_in: std_logic;
     signal tin: std_logic_vector (127 downto 0);
 
 begin
 
-    top: rx_interface_wrapper
+    top: receiver_wrapper
     port map (
         i_ckin => clock,
         i_rst => rst,

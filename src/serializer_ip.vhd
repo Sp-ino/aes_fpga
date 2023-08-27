@@ -4,7 +4,7 @@
 -- 
 -- Create Date: 25.08.2023 15:07:14
 -- Design Name: 
--- Module Name: interface_ip - Behavioral
+-- Module Name: deserializer_ip - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -26,28 +26,29 @@ use xil_defaultlib.aes_pkg.all;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use ieee.numeric_std.all;
+use ieee.numeric_std.all;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity interface_ip is
+entity deserializer_ip is
     port (
-        i_byte_ready : in std_logic;
-        i_byte : in std_logic_vector (byte_len - 1 downto 0);
+        i_transmit : in std_logic;
+        i_tx_busy: in std_logic;
+        i_word : in std_logic_vector (byte_len - 1 downto 0);
         i_ck : in std_logic;
         i_rst : in std_logic;
-        o_word : out std_logic_vector (127 downto 0);
-        o_data_seen : out std_logic;
+        o_byte : out std_logic_vector (127 downto 0);
+        o_data_ready : out std_logic;
         o_word_ready : out std_logic
     );
-end interface_ip;
+end deserializer_ip;
 
 
 
-architecture Behavioral of interface_ip is
+architecture Behavioral of deserializer_ip is
 
     signal r_num: integer range 15 downto 0;
     signal r_present_state: interface_states;
@@ -69,7 +70,9 @@ begin
                     w_next_state <= save;
                 end if;
             when save =>
-                if r_num = n_bytes - 1 then
+                w_next_state <= pause;
+            when pause =>
+                if r_num = n_bytes then
                     w_next_state <= reset_count;
                 else
                     w_next_state <= idle;
@@ -116,6 +119,8 @@ begin
                     o_word(r_num*8 + 7 downto r_num*8) <= i_byte;
                     r_num <= r_num + 1;
                     o_data_seen <= '1';
+                when pause =>
+                    o_data_seen <= '0';
                 when reset_count  =>
                     r_num <= 0;
                     o_word_ready <= '1';
