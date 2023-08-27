@@ -25,8 +25,7 @@ use IEEE.numeric_std.all;
 
 entity ckdiv_ip is
     Port ( 
-        i_ckin : in std_logic;
-        i_rst : in std_logic;
+        i_ck : in std_logic;
         o_ckout : out std_logic
     );
 end ckdiv_ip;
@@ -35,21 +34,17 @@ end ckdiv_ip;
 architecture Behavioral of ckdiv_ip is
 
     constant out_bit: integer := 3;
-    signal r_internal_count: std_logic_vector (3 downto 0);
+    signal r_internal_count: std_logic_vector (3 downto 0) := (others => '0');
 
 begin
 
     o_ckout <= r_internal_count(out_bit);
 
-    counter: process(i_ckin)
+    counter: process(i_ck)
     begin
 
         if rising_edge(i_ck) then
-            if i_rst = '1' then
-                r_internal_count <= (others => '0');
-            elsif rising_edge(i_ckin) then
-                r_internal_count <= std_logic_vector(unsigned(r_internal_count) + 1);
-            end if;
+            r_internal_count <= std_logic_vector(unsigned(r_internal_count) + 1);
         end if;
     
     end process counter;

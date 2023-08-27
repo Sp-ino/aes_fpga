@@ -65,7 +65,7 @@ begin
     -- Perform an AddRoundKey steps
     add_round_key: process(i_ck)
     begin
-        if rising_edge(i_ck) then
+        if rising_edge(i_ck) and i_enable = '1' then
             if i_rst = '1' then
                 r_addrkey_out <= (others => (others => (others => '0')));
             else

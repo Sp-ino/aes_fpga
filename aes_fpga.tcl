@@ -18,17 +18,30 @@
 proc checkRequiredFiles { origin_dir} {
   set status true
   set files [list \
- "[file normalize "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/aes_pkg.vhd"]"\
- "[file normalize "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/utils.vhd"]"\
- "[file normalize "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/aes_ip.vhd"]"\
- "[file normalize "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/ckdiv_ip.vhd"]"\
- "[file normalize "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/interface_ip.vhd"]"\
- "[file normalize "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/uart_pkg.vhd"]"\
- "[file normalize "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/uart_rx_ip.vhd"]"\
- "[file normalize "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/uart_tx_ip.vhd"]"\
- "[file normalize "$origin_dir/vivado_project/aes_fpga.srcs/sim_1/imports/aes_fpga/src/tb/aes_ip_tb.vhd"]"\
- "[file normalize "$origin_dir/vivado_project/aes_fpga.srcs/sim_1/imports/aes_fpga/src/tb/top_tb.vhd"]"\
+ "[file normalize "$origin_dir/vivado_project/tb_behav1.wcfg"]"\
+  ]
+  foreach ifile $files {
+    if { ![file isfile $ifile] } {
+      puts " Could not find local file $ifile "
+      set status false
+    }
+  }
+
+  set files [list \
+ "[file normalize "$origin_dir/src/aes_pkg.vhd"]"\
+ "[file normalize "$origin_dir/src/utils.vhd"]"\
+ "[file normalize "$origin_dir/src/aes_ip.vhd"]"\
+ "[file normalize "$origin_dir/src/interface_ip.vhd"]"\
+ "[file normalize "$origin_dir/src/uart_pkg.vhd"]"\
+ "[file normalize "$origin_dir/src/ckdiv_ip.vhd"]"\
+ "[file normalize "$origin_dir/src/uart_tx_ip.vhd"]"\
+ "[file normalize "$origin_dir/src/interface_ip_wrapper.vhd"]"\
+ "[file normalize "$origin_dir/src/uart_rx_ip.vhd"]"\
+ "[file normalize "$origin_dir/src/uart_rx_ip_wrapper.vhd"]"\
+ "[file normalize "$origin_dir/src/uart_tx_ip_wrapper.vhd"]"\
+ "[file normalize "$origin_dir/src/tb/aes_ip_tb.vhd"]"\
  "[file normalize "$origin_dir/vivado_project/aes_fpga.srcs/sim_1/imports/aes_fpga/vivado_project/tb_behav.wcfg"]"\
+ "[file normalize "$origin_dir/src/tb/rx_interf_tb.vhd"]"\
   ]
   foreach ifile $files {
     if { ![file isfile $ifile] } {
@@ -136,7 +149,15 @@ set_property -name "sim.central_dir" -value "$proj_dir/${_xil_proj_name_}.ip_use
 set_property -name "sim.ip.auto_export_scripts" -value "1" -objects $obj
 set_property -name "simulator_language" -value "Mixed" -objects $obj
 set_property -name "target_language" -value "VHDL" -objects $obj
-set_property -name "webtalk.xsim_launch_sim" -value "19" -objects $obj
+set_property -name "webtalk.activehdl_export_sim" -value "8" -objects $obj
+set_property -name "webtalk.ies_export_sim" -value "8" -objects $obj
+set_property -name "webtalk.modelsim_export_sim" -value "8" -objects $obj
+set_property -name "webtalk.questa_export_sim" -value "8" -objects $obj
+set_property -name "webtalk.riviera_export_sim" -value "8" -objects $obj
+set_property -name "webtalk.vcs_export_sim" -value "8" -objects $obj
+set_property -name "webtalk.xcelium_export_sim" -value "2" -objects $obj
+set_property -name "webtalk.xsim_export_sim" -value "8" -objects $obj
+set_property -name "webtalk.xsim_launch_sim" -value "49" -objects $obj
 
 # Create 'sources_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sources_1] ""]} {
@@ -146,54 +167,72 @@ if {[string equal [get_filesets -quiet sources_1] ""]} {
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
 set files [list \
- [file normalize "${origin_dir}/vivado_project/aes_fpga.srcs/sources_1/imports/src/aes_pkg.vhd"] \
- [file normalize "${origin_dir}/vivado_project/aes_fpga.srcs/sources_1/imports/src/utils.vhd"] \
- [file normalize "${origin_dir}/vivado_project/aes_fpga.srcs/sources_1/imports/src/aes_ip.vhd"] \
- [file normalize "${origin_dir}/vivado_project/aes_fpga.srcs/sources_1/imports/src/ckdiv_ip.vhd"] \
- [file normalize "${origin_dir}/vivado_project/aes_fpga.srcs/sources_1/imports/src/interface_ip.vhd"] \
- [file normalize "${origin_dir}/vivado_project/aes_fpga.srcs/sources_1/imports/src/uart_pkg.vhd"] \
- [file normalize "${origin_dir}/vivado_project/aes_fpga.srcs/sources_1/imports/src/uart_rx_ip.vhd"] \
- [file normalize "${origin_dir}/vivado_project/aes_fpga.srcs/sources_1/imports/src/uart_tx_ip.vhd"] \
+ [file normalize "${origin_dir}/src/aes_pkg.vhd"] \
+ [file normalize "${origin_dir}/src/utils.vhd"] \
+ [file normalize "${origin_dir}/src/aes_ip.vhd"] \
+ [file normalize "${origin_dir}/src/interface_ip.vhd"] \
+ [file normalize "${origin_dir}/src/uart_pkg.vhd"] \
+ [file normalize "${origin_dir}/src/ckdiv_ip.vhd"] \
+ [file normalize "${origin_dir}/src/uart_tx_ip.vhd"] \
+ [file normalize "${origin_dir}/src/interface_ip_wrapper.vhd"] \
+ [file normalize "${origin_dir}/src/uart_rx_ip.vhd"] \
+ [file normalize "${origin_dir}/src/uart_rx_ip_wrapper.vhd"] \
+ [file normalize "${origin_dir}/src/uart_tx_ip_wrapper.vhd"] \
 ]
 add_files -norecurse -fileset $obj $files
 
 # Set 'sources_1' fileset file properties for remote files
-set file "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/aes_pkg.vhd"
+set file "$origin_dir/src/aes_pkg.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/utils.vhd"
+set file "$origin_dir/src/utils.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/aes_ip.vhd"
+set file "$origin_dir/src/aes_ip.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/ckdiv_ip.vhd"
+set file "$origin_dir/src/interface_ip.vhd"
+set file [file normalize $file]
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
+
+set file "$origin_dir/src/uart_pkg.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/interface_ip.vhd"
+set file "$origin_dir/src/ckdiv_ip.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/uart_pkg.vhd"
+set file "$origin_dir/src/uart_tx_ip.vhd"
+set file [file normalize $file]
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
+
+set file "$origin_dir/src/interface_ip_wrapper.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/uart_rx_ip.vhd"
+set file "$origin_dir/src/uart_rx_ip.vhd"
+set file [file normalize $file]
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
+
+set file "$origin_dir/src/uart_rx_ip_wrapper.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/uart_tx_ip.vhd"
+set file "$origin_dir/src/uart_tx_ip_wrapper.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
@@ -229,19 +268,13 @@ if {[string equal [get_filesets -quiet sim_1] ""]} {
 # Set 'sim_1' fileset object
 set obj [get_filesets sim_1]
 set files [list \
- [file normalize "${origin_dir}/vivado_project/aes_fpga.srcs/sim_1/imports/aes_fpga/src/tb/aes_ip_tb.vhd"] \
- [file normalize "${origin_dir}/vivado_project/aes_fpga.srcs/sim_1/imports/aes_fpga/src/tb/top_tb.vhd"] \
+ [file normalize "${origin_dir}/src/tb/aes_ip_tb.vhd"] \
  [file normalize "${origin_dir}/vivado_project/aes_fpga.srcs/sim_1/imports/aes_fpga/vivado_project/tb_behav.wcfg"] \
 ]
 add_files -norecurse -fileset $obj $files
 
 # Set 'sim_1' fileset file properties for remote files
-set file "$origin_dir/vivado_project/aes_fpga.srcs/sim_1/imports/aes_fpga/src/tb/aes_ip_tb.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL" -objects $file_obj
-
-set file "$origin_dir/vivado_project/aes_fpga.srcs/sim_1/imports/aes_fpga/src/tb/top_tb.vhd"
+set file "$origin_dir/src/tb/aes_ip_tb.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
@@ -256,6 +289,40 @@ set_property -name "top" -value "tb" -objects $obj
 set_property -name "top_auto_set" -value "0" -objects $obj
 set_property -name "top_lib" -value "xil_defaultlib" -objects $obj
 
+# Create 'sim_2' fileset (if not found)
+if {[string equal [get_filesets -quiet sim_2] ""]} {
+  create_fileset -simset sim_2
+}
+
+# Set 'sim_2' fileset object
+set obj [get_filesets sim_2]
+set files [list \
+ [file normalize "${origin_dir}/src/tb/rx_interf_tb.vhd"] \
+]
+add_files -norecurse -fileset $obj $files
+
+# Add local files from the original project (-no_copy_sources specified)
+set files [list \
+ [file normalize "${origin_dir}/vivado_project/tb_behav1.wcfg" ]\
+]
+set added_files [add_files -fileset sim_2 $files]
+
+# Set 'sim_2' fileset file properties for remote files
+set file "$origin_dir/src/tb/rx_interf_tb.vhd"
+set file [file normalize $file]
+set file_obj [get_files -of_objects [get_filesets sim_2] [list "*$file"]]
+set_property -name "file_type" -value "VHDL" -objects $file_obj
+
+
+# Set 'sim_2' fileset file properties for local files
+# None
+
+# Set 'sim_2' fileset properties
+set obj [get_filesets sim_2]
+set_property -name "top" -value "tb" -objects $obj
+set_property -name "top_auto_set" -value "0" -objects $obj
+set_property -name "top_lib" -value "xil_defaultlib" -objects $obj
+
 # Set 'utils_1' fileset object
 set obj [get_filesets utils_1]
 # Empty (no sources present)
@@ -266,34 +333,13 @@ set obj [get_filesets utils_1]
 
 # Adding sources referenced in BDs, if not already added
 if { [get_files aes_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/aes_pkg.vhd"
+  import_files -quiet -fileset sources_1 "$origin_dir/src/aes_pkg.vhd"
 }
 if { [get_files utils.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/utils.vhd"
+  import_files -quiet -fileset sources_1 "$origin_dir/src/utils.vhd"
 }
 if { [get_files aes_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/aes_ip.vhd"
-}
-if { [get_files aes_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/aes_pkg.vhd"
-}
-if { [get_files interface_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/interface_ip.vhd"
-}
-if { [get_files ckdiv_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/ckdiv_ip.vhd"
-}
-if { [get_files uart_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/uart_pkg.vhd"
-}
-if { [get_files uart_rx_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/uart_rx_ip.vhd"
-}
-if { [get_files uart_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/uart_pkg.vhd"
-}
-if { [get_files uart_tx_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/vivado_project/aes_fpga.srcs/sources_1/imports/src/uart_tx_ip.vhd"
+  import_files -quiet -fileset sources_1 "$origin_dir/src/aes_ip.vhd"
 }
 
 
@@ -301,7 +347,7 @@ if { [get_files uart_tx_ip.vhd] == "" } {
 proc cr_bd_top_design { parentCell } {
 # The design that will be created by this Tcl proc contains the following 
 # module references:
-# aes_ip, ckdiv_ip, interface_ip, uart_rx_ip, uart_tx_ip
+# aes_ip
 
 
 
@@ -320,10 +366,6 @@ proc cr_bd_top_design { parentCell } {
   if { $bCheckModules == 1 } {
      set list_check_mods "\ 
   aes_ip\
-  ckdiv_ip\
-  interface_ip\
-  uart_rx_ip\
-  uart_tx_ip\
   "
 
    set list_mods_missing ""
@@ -378,13 +420,8 @@ proc cr_bd_top_design { parentCell } {
 
   # Create ports
   set i_ckin [ create_bd_port -dir I i_ckin ]
-  set i_data_in [ create_bd_port -dir I -from 7 -to 0 i_data_in ]
-  set i_data_ready [ create_bd_port -dir I i_data_ready ]
   set i_rst [ create_bd_port -dir I i_rst ]
   set i_rx [ create_bd_port -dir I i_rx ]
-  set o_busy [ create_bd_port -dir O o_busy ]
-  set o_textout [ create_bd_port -dir O -from 127 -to 0 o_textout ]
-  set o_tx [ create_bd_port -dir O o_tx ]
 
   # Create instance: aes_ip_0, and set properties
   set block_name aes_ip
@@ -397,6 +434,137 @@ proc cr_bd_top_design { parentCell } {
      return 1
    }
   
+  # Create port connections
+  connect_bd_net -net i_rst_1 [get_bd_ports i_rst] [get_bd_pins aes_ip_0/i_rst]
+
+  # Create address segments
+
+
+  # Restore current instance
+  current_bd_instance $oldCurInst
+
+  save_bd_design
+common::send_gid_msg -ssname BD::TCL -id 2050 -severity "WARNING" "This Tcl script was generated from a block design that has not been validated. It is possible that design <$design_name> may result in errors during validation."
+
+  close_bd_design $design_name 
+}
+# End of cr_bd_top_design()
+cr_bd_top_design ""
+set_property REGISTERED_WITH_MANAGER "1" [get_files top_design.bd ] 
+set_property SYNTH_CHECKPOINT_MODE "Hierarchical" [get_files top_design.bd ] 
+
+
+# Create wrapper file for top_design.bd
+make_wrapper -files [get_files top_design.bd] -import -top
+
+if { [get_files uart_pkg.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
+}
+if { [get_files uart_rx_ip.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip.vhd"
+}
+if { [get_files uart_rx_ip_wrapper.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip_wrapper.vhd"
+}
+if { [get_files aes_pkg.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/aes_pkg.vhd"
+}
+if { [get_files interface_ip.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/interface_ip.vhd"
+}
+if { [get_files interface_ip_wrapper.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/interface_ip_wrapper.vhd"
+}
+if { [get_files ckdiv_ip.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/ckdiv_ip.vhd"
+}
+
+
+# Proc to create BD rx_interface
+proc cr_bd_rx_interface { parentCell } {
+# The design that will be created by this Tcl proc contains the following 
+# module references:
+# ckdiv_ip, interface_ip_wrapper, uart_rx_ip_wrapper
+
+
+
+  # CHANGE DESIGN NAME HERE
+  set design_name rx_interface
+
+  common::send_gid_msg -ssname BD::TCL -id 2010 -severity "INFO" "Currently there is no design <$design_name> in project, so creating one..."
+
+  create_bd_design $design_name
+
+  set bCheckIPsPassed 1
+  ##################################################################
+  # CHECK Modules
+  ##################################################################
+  set bCheckModules 1
+  if { $bCheckModules == 1 } {
+     set list_check_mods "\ 
+  ckdiv_ip\
+  interface_ip_wrapper\
+  uart_rx_ip_wrapper\
+  "
+
+   set list_mods_missing ""
+   common::send_gid_msg -ssname BD::TCL -id 2020 -severity "INFO" "Checking if the following modules exist in the project's sources: $list_check_mods ."
+
+   foreach mod_vlnv $list_check_mods {
+      if { [can_resolve_reference $mod_vlnv] == 0 } {
+         lappend list_mods_missing $mod_vlnv
+      }
+   }
+
+   if { $list_mods_missing ne "" } {
+      catch {common::send_gid_msg -ssname BD::TCL -id 2021 -severity "ERROR" "The following module(s) are not found in the project: $list_mods_missing" }
+      common::send_gid_msg -ssname BD::TCL -id 2022 -severity "INFO" "Please add source files for the missing module(s) above."
+      set bCheckIPsPassed 0
+   }
+}
+
+  if { $bCheckIPsPassed != 1 } {
+    common::send_gid_msg -ssname BD::TCL -id 2023 -severity "WARNING" "Will not continue with creation of design due to the error(s) above."
+    return 3
+  }
+
+  variable script_folder
+
+  if { $parentCell eq "" } {
+     set parentCell [get_bd_cells /]
+  }
+
+  # Get object for parentCell
+  set parentObj [get_bd_cells $parentCell]
+  if { $parentObj == "" } {
+     catch {common::send_gid_msg -ssname BD::TCL -id 2090 -severity "ERROR" "Unable to find parent cell <$parentCell>!"}
+     return
+  }
+
+  # Make sure parentObj is hier blk
+  set parentType [get_property TYPE $parentObj]
+  if { $parentType ne "hier" } {
+     catch {common::send_gid_msg -ssname BD::TCL -id 2091 -severity "ERROR" "Parent <$parentObj> has TYPE = <$parentType>. Expected to be <hier>."}
+     return
+  }
+
+  # Save current instance; Restore later
+  set oldCurInst [current_bd_instance .]
+
+  # Set parent object as current
+  current_bd_instance $parentObj
+
+
+  # Create interface ports
+
+  # Create ports
+  set i_ckin [ create_bd_port -dir I i_ckin ]
+  set i_rst [ create_bd_port -dir I i_rst ]
+  set i_rx [ create_bd_port -dir I i_rx ]
+  set o_ck [ create_bd_port -dir O o_ck ]
+  set o_textin [ create_bd_port -dir O -from 127 -to 0 o_textin ]
+  set o_word_ready [ create_bd_port -dir O o_word_ready ]
+
   # Create instance: ckdiv_ip_0, and set properties
   set block_name ckdiv_ip
   set block_cell_name ckdiv_ip_0
@@ -408,54 +576,38 @@ proc cr_bd_top_design { parentCell } {
      return 1
    }
   
-  # Create instance: interface_ip_0, and set properties
-  set block_name interface_ip
-  set block_cell_name interface_ip_0
-  if { [catch {set interface_ip_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
+  # Create instance: interface_ip_wrapper_0, and set properties
+  set block_name interface_ip_wrapper
+  set block_cell_name interface_ip_wrapper_0
+  if { [catch {set interface_ip_wrapper_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
      catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
      return 1
-   } elseif { $interface_ip_0 eq "" } {
+   } elseif { $interface_ip_wrapper_0 eq "" } {
      catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
      return 1
    }
   
-  # Create instance: uart_rx_ip_0, and set properties
-  set block_name uart_rx_ip
-  set block_cell_name uart_rx_ip_0
-  if { [catch {set uart_rx_ip_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
+  # Create instance: uart_rx_ip_wrapper_0, and set properties
+  set block_name uart_rx_ip_wrapper
+  set block_cell_name uart_rx_ip_wrapper_0
+  if { [catch {set uart_rx_ip_wrapper_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
      catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
      return 1
-   } elseif { $uart_rx_ip_0 eq "" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   }
-  
-  # Create instance: uart_tx_ip_0, and set properties
-  set block_name uart_tx_ip
-  set block_cell_name uart_tx_ip_0
-  if { [catch {set uart_tx_ip_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   } elseif { $uart_tx_ip_0 eq "" } {
+   } elseif { $uart_rx_ip_wrapper_0 eq "" } {
      catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
      return 1
    }
   
   # Create port connections
-  connect_bd_net -net Net [get_bd_ports i_rst] [get_bd_pins aes_ip_0/i_rst] [get_bd_pins ckdiv_ip_0/i_rst] [get_bd_pins interface_ip_0/i_rst] [get_bd_pins uart_rx_ip_0/i_rst] [get_bd_pins uart_tx_ip_0/i_rst]
-  connect_bd_net -net aes_ip_0_o_textout [get_bd_ports o_textout] [get_bd_pins aes_ip_0/o_textout]
-  connect_bd_net -net ckdiv_ip_0_o_ckout [get_bd_pins aes_ip_0/i_ck] [get_bd_pins ckdiv_ip_0/o_ckout] [get_bd_pins interface_ip_0/i_ck] [get_bd_pins uart_rx_ip_0/i_ck] [get_bd_pins uart_tx_ip_0/i_ck]
-  connect_bd_net -net i_ckin_1 [get_bd_ports i_ckin] [get_bd_pins ckdiv_ip_0/i_ckin]
-  connect_bd_net -net i_data_in_1 [get_bd_ports i_data_in] [get_bd_pins uart_tx_ip_0/i_data_in]
-  connect_bd_net -net i_data_ready_1 [get_bd_ports i_data_ready] [get_bd_pins uart_tx_ip_0/i_data_ready]
-  connect_bd_net -net i_rx_1 [get_bd_ports i_rx] [get_bd_pins uart_rx_ip_0/i_rx]
-  connect_bd_net -net interface_ip_0_o_data_seen [get_bd_pins interface_ip_0/o_data_seen] [get_bd_pins uart_rx_ip_0/i_data_seen]
-  connect_bd_net -net interface_ip_0_o_word [get_bd_pins aes_ip_0/i_textin] [get_bd_pins interface_ip_0/o_word]
-  connect_bd_net -net interface_ip_0_o_word_ready [get_bd_pins aes_ip_0/i_enable] [get_bd_pins interface_ip_0/o_word_ready]
-  connect_bd_net -net uart_rx_ip_0_o_data_out [get_bd_pins interface_ip_0/i_byte] [get_bd_pins uart_rx_ip_0/o_data_out]
-  connect_bd_net -net uart_rx_ip_0_o_data_ready [get_bd_pins interface_ip_0/i_byte_ready] [get_bd_pins uart_rx_ip_0/o_data_ready]
-  connect_bd_net -net uart_tx_ip_0_o_busy [get_bd_ports o_busy] [get_bd_pins uart_tx_ip_0/o_busy]
-  connect_bd_net -net uart_tx_ip_0_o_tx [get_bd_ports o_tx] [get_bd_pins uart_tx_ip_0/o_tx]
+  connect_bd_net -net Net [get_bd_ports i_rst] [get_bd_pins interface_ip_wrapper_0/i_rst] [get_bd_pins uart_rx_ip_wrapper_0/i_rst]
+  connect_bd_net -net ckdiv_ip_0_o_ckout [get_bd_ports o_ck] [get_bd_pins ckdiv_ip_0/o_ckout] [get_bd_pins interface_ip_wrapper_0/i_ck] [get_bd_pins uart_rx_ip_wrapper_0/i_ck]
+  connect_bd_net -net i_ckin_1 [get_bd_ports i_ckin] [get_bd_pins ckdiv_ip_0/i_ck]
+  connect_bd_net -net i_rx_1 [get_bd_ports i_rx] [get_bd_pins uart_rx_ip_wrapper_0/i_rx]
+  connect_bd_net -net interface_ip_wrapper_0_o_data_seen [get_bd_pins interface_ip_wrapper_0/o_data_seen] [get_bd_pins uart_rx_ip_wrapper_0/i_data_seen]
+  connect_bd_net -net interface_ip_wrapper_0_o_word [get_bd_ports o_textin] [get_bd_pins interface_ip_wrapper_0/o_word]
+  connect_bd_net -net interface_ip_wrapper_0_o_word_ready [get_bd_ports o_word_ready] [get_bd_pins interface_ip_wrapper_0/o_word_ready]
+  connect_bd_net -net uart_rx_ip_wrapper_0_o_data_out [get_bd_pins interface_ip_wrapper_0/i_byte] [get_bd_pins uart_rx_ip_wrapper_0/o_data_out]
+  connect_bd_net -net uart_rx_ip_wrapper_0_o_data_ready [get_bd_pins interface_ip_wrapper_0/i_byte_ready] [get_bd_pins uart_rx_ip_wrapper_0/o_data_ready]
 
   # Create address segments
 
@@ -463,18 +615,19 @@ proc cr_bd_top_design { parentCell } {
   # Restore current instance
   current_bd_instance $oldCurInst
 
-  validate_bd_design
   save_bd_design
+common::send_gid_msg -ssname BD::TCL -id 2050 -severity "WARNING" "This Tcl script was generated from a block design that has not been validated. It is possible that design <$design_name> may result in errors during validation."
+
   close_bd_design $design_name 
 }
-# End of cr_bd_top_design()
-cr_bd_top_design ""
-set_property REGISTERED_WITH_MANAGER "1" [get_files top_design.bd ] 
-set_property SYNTH_CHECKPOINT_MODE "Hierarchical" [get_files top_design.bd ] 
+# End of cr_bd_rx_interface()
+cr_bd_rx_interface ""
+set_property REGISTERED_WITH_MANAGER "1" [get_files rx_interface.bd ] 
+set_property SYNTH_CHECKPOINT_MODE "Hierarchical" [get_files rx_interface.bd ] 
 
 
-# Create wrapper file for top_design.bd
-make_wrapper -files [get_files top_design.bd] -import -top
+# Create wrapper file for rx_interface.bd
+make_wrapper -files [get_files rx_interface.bd] -import -top
 
 set idrFlowPropertiesConstraints ""
 catch {
