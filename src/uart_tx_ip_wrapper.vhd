@@ -19,12 +19,13 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE;
-library xil_defaultlib;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
-use IEEE.std_logic_1164.all;
-use IEEE.numeric_std.all;
+library xil_defaultlib;
 use xil_defaultlib.uart_pkg.all;
+use xil_defaultlib.common_pkg.all;
 
 
 
@@ -32,8 +33,8 @@ entity uart_tx_ip_wrapper is
     port (
         i_ck : in std_logic;
         i_rst: in std_logic;
-        i_data_ready : in std_logic;
-        i_data_in : in std_logic_vector (in_len-1 downto 0);
+        i_data_valid : in std_logic;
+        i_data_in : in std_logic_vector (byte_width_bit-1 downto 0);
         o_busy : out std_logic;
         o_tx : out std_logic
     );
@@ -46,8 +47,8 @@ architecture Behavioral of uart_tx_ip_wrapper is
     port (
         i_ck : in std_logic;
         i_rst: in std_logic;
-        i_data_ready : in std_logic;
-        i_data_in : in std_logic_vector (in_len-1 downto 0);
+        i_data_valid : in std_logic;
+        i_data_in : in std_logic_vector (byte_width_bit-1 downto 0);
         o_busy : out std_logic;
         o_tx : out std_logic
     );
@@ -59,7 +60,7 @@ begin
     port map (
         i_ck => i_ck,
         i_rst => i_rst,
-        i_data_ready => i_data_ready,
+        i_data_valid => i_data_valid,
         i_data_in => i_data_in,
         o_busy => o_busy,
         o_tx => o_tx

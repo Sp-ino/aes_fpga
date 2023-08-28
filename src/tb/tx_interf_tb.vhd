@@ -23,6 +23,12 @@ library ieee;
 use ieee.std_logic_1164.ALL;
 use ieee.numeric_std.ALL;
 
+library xil_defaultlib;
+use xil_defaultlib.uart_pkg.all;
+use xil_defaultlib.common_pkg.all;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
@@ -35,65 +41,65 @@ end tb;
 
 architecture Behavioral of tb is
 
-    component aes_ip is
-        port (
-            i_enable: in std_logic;
-            i_textin : in std_logic_vector (word_width_bit - 1 downto 0);
-            i_rst : in std_logic;
-            i_ck : in std_logic;
-            o_textout : out std_logic_vector (word_width_bit - 1 downto 0)
-        );
+    component transmitter_wrapper is
+    port (
+        i_transmit : in std_logic;
+        i_word : in std_logic_vector (word_width_bit - 1 downto 0);
+        i_ck : in std_logic;
+        i_rst : in std_logic;
+        tx : out std_logic
+    );
     end component;
     
     constant tck: time := 10 ns;
+
     constant in1: integer := 1;
     constant in2: integer := 1234556;
 
     signal clock: std_logic;
-    signal reset: std_logic;
-    signal enable: std_logic;
-    signal tin: std_logic_vector (word_width_bit - 1 downto 0);
-    signal tout: std_logic_vector (word_width_bit - 1 downto 0);
+    signal rst: std_logic;
+    signal tx: std_logic;
+    signal transmit: std_logic;
+    signal tout: std_logic_vector (word_width_bit - 1 downto 0) := x"ef0b0a0a0a0a0a0a0a0a0a0a1a0ba953";
 
 begin
 
-    aes: aes_ip
+    top: transmitter_wrapper
     port map (
-        i_enable => enable,
-        i_textin => tin,
-        i_rst => reset,
+        i_transmit => transmit,
+        i_word => tout,
         i_ck => clock,
-        o_textout => tout
+        i_rst => rst,
+        tx => tx
     );
         
     
     clock_gen: process
     begin
+
         clock <= '1';
         wait for tck/2;
         clock <= '0';
         wait for tck/2;
+    
     end process clock_gen;
+
 
     test_sig_gen: process
     begin
-        wait for tck/2;
-        reset <= '1';
-        wait for 2*tck;
-        reset <= '0';
-        enable <= '1';
-        tin <= std_logic_vector(to_unsigned(in2, 128));
-        wait for tck;
-        enable <= '0';
-        wait for 4*tck;
-        
-        tin <= std_logic_vector(to_unsigned(in1, 128));
-        enable <= '1';
-        wait for tck;
-        enable <= '0';
-        wait for 4*tck;
 
-        assert true report "End of testbench reached!" severity failure;
+        wait for tck/2;
+        
+        rst <= '1';
+        wait for 2*tck;
+        rst <= '0';
+        wait for 2*tck;
+
+        transmit <= '1';
+        wait for 2*tck;
+        transmit <= '0';
+        wait for tck*bit_duration*200;
+
     end process test_sig_gen;
 
 end Behavioral;

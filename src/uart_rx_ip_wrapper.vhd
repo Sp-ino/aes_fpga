@@ -19,12 +19,13 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE;
-library xil_defaultlib;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
-use IEEE.std_logic_1164.all;
-use IEEE.numeric_std.all;
+library xil_defaultlib;
 use xil_defaultlib.uart_pkg.all;
+use xil_defaultlib.common_pkg.all;
 
 
 
@@ -34,8 +35,8 @@ entity uart_rx_ip_wrapper is
         i_rx : in std_logic;
         i_rst : in std_logic;
         i_data_seen : in std_logic;
-        o_data_ready : out std_logic;
-        o_data_out : out std_logic_vector (out_len - 1 downto 0)
+        o_data_valid : out std_logic;
+        o_data_out : out std_logic_vector (byte_width_bit - 1 downto 0)
     );
 end uart_rx_ip_wrapper;
 
@@ -48,8 +49,8 @@ architecture Structure of uart_rx_ip_wrapper is
         i_rx : in std_logic;
         i_rst : in std_logic;
         i_data_seen : in std_logic;
-        o_data_ready : out std_logic;
-        o_data_out : out std_logic_vector (out_len - 1 downto 0)
+        o_data_valid : out std_logic;
+        o_data_out : out std_logic_vector (byte_width_bit - 1 downto 0)
     );
     end component; 
 
@@ -61,7 +62,7 @@ begin
         i_rx => i_rx,
         i_rst => i_rst,
         i_data_seen => i_data_seen,
-        o_data_ready => o_data_ready,
+        o_data_valid => o_data_valid,
         o_data_out => o_data_out
     );
 

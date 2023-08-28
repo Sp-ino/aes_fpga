@@ -21,12 +21,13 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE;
-library xil_defaultlib;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
-use IEEE.std_logic_1164.all;
-use IEEE.numeric_std.all;
+library xil_defaultlib;
 use xil_defaultlib.uart_pkg.all;
+use xil_defaultlib.common_pkg.all;
 
 
 
@@ -36,8 +37,8 @@ entity uart_rx_ip is
         i_rx : in std_logic;
         i_rst : in std_logic;
         i_data_seen : in std_logic;
-        o_data_ready : out std_logic;
-        o_data_out : out std_logic_vector (out_len - 1 downto 0)
+        o_data_valid : out std_logic;
+        o_data_out : out std_logic_vector (byte_width_bit - 1 downto 0)
     );
 end uart_rx_ip;
 
@@ -121,14 +122,14 @@ begin
             if i_rst = '1' then
                 r_count_bits <= 0;
                 r_count_clock_cycles <= 1;
-                o_data_ready <= '0';
+                o_data_valid <= '0';
                 o_data_out <= (others => '0');
             else
                 case r_present_state is
                 when idle =>
                     r_count_bits <= 0;
                     r_count_clock_cycles <= 1;
-                    o_data_ready <= '0';
+                    o_data_valid <= '0';
                 when wait_initial_time =>
                     if r_count_clock_cycles < initial_wait then
                         r_count_clock_cycles <= r_count_clock_cycles + 1;
@@ -149,18 +150,18 @@ begin
                             end if;
                         end if;
                     else
-                        if i_rx = '1' then      -- If i_rx is high after the 8 data bits, the frame is valid and we assert o_data_ready
-                            o_data_ready <= '1';
+                        if i_rx = '1' then      -- If i_rx is high after the 8 data bits, the frame is valid and we assert o_data_valid
+                            o_data_valid <= '1';
                         end if;
                     end if;
                 when wait_data_seen =>
                     if i_data_seen = '1' then
-                        o_data_ready <= '0';
+                        o_data_valid <= '0';
                     end if;
                 when others =>
                     r_count_bits <= 0;
                     r_count_clock_cycles <= 1;
-                    o_data_ready <= '0';
+                    o_data_valid <= '0';
                     o_data_out <= (others => '0');
                 end case;
             end if;

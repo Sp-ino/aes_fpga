@@ -20,13 +20,13 @@
 
 
 library ieee;
-library xil_defaultlib;
 use ieee.std_logic_1164.all;
-use xil_defaultlib.aes_pkg.all;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
 use ieee.numeric_std.all;
+
+library xil_defaultlib;
+use xil_defaultlib.uart_pkg.all;
+use xil_defaultlib.common_pkg.all;
+
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
@@ -35,13 +35,13 @@ use ieee.numeric_std.all;
 
 entity deserializer_ip is
     port (
-        i_byte_ready : in std_logic;
-        i_byte : in std_logic_vector (byte_len - 1 downto 0);
+        i_byte_valid : in std_logic;
+        i_byte : in std_logic_vector (byte_width_bit - 1 downto 0);
         i_ck : in std_logic;
         i_rst : in std_logic;
-        o_word : out std_logic_vector (127 downto 0);
+        o_word : out std_logic_vector (word_width_bit - 1 downto 0);
         o_data_seen : out std_logic;
-        o_word_ready : out std_logic
+        o_word_valid : out std_logic
     );
 end deserializer_ip;
 
@@ -49,9 +49,9 @@ end deserializer_ip;
 
 architecture Behavioral of deserializer_ip is
 
-    signal r_num: integer range 15 downto 0;
-    signal r_present_state: interface_states;
-    signal w_next_state: interface_states;
+    signal r_num: integer range word_width_byte downto 0;
+    signal r_present_state: deserializer_states;
+    signal w_next_state: deserializer_states;
 
 begin
 
@@ -63,7 +63,7 @@ begin
         else
             case r_present_state is
             when idle =>
-                if i_byte_ready = '0' then
+                if i_byte_valid = '0' then
                     w_next_state <= idle;
                 else                        
                     w_next_state <= save;
@@ -71,7 +71,7 @@ begin
             when save =>
                 w_next_state <= pause;
             when pause =>
-                if r_num = n_bytes then
+                if r_num = word_width_byte then
                     w_next_state <= reset_count;
                 else
                     w_next_state <= idle;
@@ -106,11 +106,11 @@ begin
                 r_num <= 0;
                 o_word <= (others => '0');
                 o_data_seen <= '0';
-                o_word_ready <= '0';
+                o_word_valid <= '0';
             else
                 case r_present_state is
                 when idle =>
-                    if i_byte_ready = '1' and r_num = 0 then
+                    if i_byte_valid = '1' and r_num = 0 then
                         o_word <= (others => '0');
                     end if;
                     o_data_seen <= '0';
@@ -122,7 +122,7 @@ begin
                     o_data_seen <= '0';
                 when reset_count  =>
                     r_num <= 0;
-                    o_word_ready <= '1';
+                    o_word_valid <= '1';
                 end case;
             end if;
         end if;

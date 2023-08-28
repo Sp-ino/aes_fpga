@@ -19,10 +19,10 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE;
-use IEEE.std_logic_1164.all;
+library ieee;
+use ieee.std_logic_1164.all;
 -- arithmetic functions with Signed or Unsigned values
-use IEEE.numeric_std.ALL;
+use ieee.numeric_std.ALL;
 
 library xil_defaultlib;
 use xil_defaultlib.aes_pkg.all;
@@ -41,10 +41,10 @@ use xil_defaultlib.utils.all;
 entity aes_ip is
     port (
         i_enable: in std_logic;
-        i_textin : in std_logic_vector (127 downto 0);
+        i_textin : in std_logic_vector (word_width_bit - 1 downto 0);
         i_rst : in std_logic;
         i_ck : in std_logic;
-        o_textout : out std_logic_vector (127 downto 0)
+        o_textout : out std_logic_vector (word_width_bit - 1 downto 0)
     );
 end aes_ip;
 
@@ -52,7 +52,7 @@ end aes_ip;
 architecture behavioral of aes_ip is
 
     constant key: aes_matrix := (others => (others => (others => '1')));--'11010101'));
-    signal w_in_bytes: aes_matrix;
+    signal w_iword_width_byte: aes_matrix;
     signal r_addrkey_out: aes_matrix;
     signal r_sbox_out: aes_matrix;
     signal r_out_bytes: aes_matrix;
@@ -60,7 +60,7 @@ architecture behavioral of aes_ip is
 begin
 
     -- Simply a conversion from std_logic_vector to the matrix type I use to manage internal operations
-    w_in_bytes <= in_conversion(i_textin);
+    w_iword_width_byte <= in_conversion(i_textin);
 
     -- Perform an AddRoundKey steps
     add_round_key: process(i_ck)
@@ -71,7 +71,7 @@ begin
             else
                 for idx_r in n_rows - 1 downto 0 loop
                     for idx_c in n_cols - 1 downto 0 loop
-                        r_addrkey_out(idx_r)(idx_c) <= w_in_bytes(idx_r)(idx_c) xor key(idx_r)(idx_c);
+                        r_addrkey_out(idx_r)(idx_c) <= w_iword_width_byte(idx_r)(idx_c) xor key(idx_r)(idx_c);
                     end loop;
                 end loop;
             end if;  
