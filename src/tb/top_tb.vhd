@@ -38,36 +38,37 @@ end tb;
 
 architecture Behavioral of tb is
 
-    component receiver_wrapper is
+    component top_wrapper is
     port (
         i_ckin : in std_logic;
         i_rst : in std_logic;
         i_rx : in std_logic;
-        o_word : out std_logic_vector ( word_width_bit - 1 downto 0 );
-        o_word_valid : out std_logic
+        i_transmit: in std_logic;
+        o_tx : out std_logic
     );
     end component;
     
-    constant tck: time := 10 ns;
+    constant tck_fast: time := 10 ns;
+    constant tck: time := tck_fast*16;
 
     constant in1: integer := 1;
     constant in2: integer := 1234556;
 
+    signal transmit: std_logic;
     signal clock: std_logic;
     signal rst: std_logic;
     signal rx: std_logic;
-    signal data_valid: std_logic;
-    signal tin: std_logic_vector (word_width_bit - 1 downto 0);
+    signal tx: std_logic;
 
 begin
 
-    top: receiver_wrapper
+    top: top_wrapper
     port map (
         i_ckin => clock,
         i_rst => rst,
         i_rx => rx,
-        o_word => tin,
-        o_word_valid => data_valid
+        i_transmit => transmit,
+        o_tx => tx
     );
         
     
@@ -75,9 +76,9 @@ begin
     begin
 
         clock <= '1';
-        wait for tck/2;
+        wait for tck_fast/2;
         clock <= '0';
-        wait for tck/2;
+        wait for tck_fast/2;
     
     end process clock_gen;
 
@@ -85,9 +86,10 @@ begin
     test_sig_gen: process
     begin
 
+        transmit <= '0';
         rx <= '1';
         rst <= '1';
-        wait for 3*tck/2;
+        wait for 3*tck;
         rst <= '0';
 
         -- send start bit
@@ -532,8 +534,12 @@ begin
         wait for bit_duration*tck;
         rx <= '1';
         
-        wait for bit_duration*tck;
+        wait for bit_duration*tck;        
+        transmit <= '1';
+        wait for 2*tck;
+        transmit <= '0';
 
+        wait for tck*bit_duration*200;
 
     end process test_sig_gen;
 

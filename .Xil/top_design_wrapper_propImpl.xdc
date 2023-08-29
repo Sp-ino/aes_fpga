@@ -1,0 +1,5 @@
+set_property SRC_FILE_INFO {cfile:C:/Users/spino/Documents/fpga/aes_fpga/src/constr/timing_constr.xdc rfile:../src/constr/timing_constr.xdc id:1} [current_design]
+set_property src_info {type:XDC file:1 line:3 export:INPUT save:INPUT read:READ} [current_design]
+create_clock -name master_ck -period 10.00 [get_ports i_clock]
+set_property src_info {type:XDC file:1 line:4 export:INPUT save:INPUT read:READ} [current_design]
+create_generated_clock -name ckdiv16 -source [get_ports i_clock] -divide_by 16 [get_pins {top_design/ckdiv_ip/r_internal_count_reg[3]/Q}]

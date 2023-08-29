@@ -49,7 +49,7 @@ end deserializer_ip;
 
 architecture Behavioral of deserializer_ip is
 
-    signal r_num: integer range word_width_byte downto 0;
+    signal r_num: integer range word_width_byte downto 0 := 0;
     signal r_present_state: deserializer_states;
     signal w_next_state: deserializer_states;
 

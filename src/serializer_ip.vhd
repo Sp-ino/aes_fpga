@@ -48,7 +48,7 @@ end serializer_ip;
 
 architecture Behavioral of serializer_ip is
 
-    signal r_num: integer range 15 downto 0;
+    signal r_num: integer range 15 downto 0 := 0;
     signal r_present_state: serializer_states;
     signal w_next_state: serializer_states;
 

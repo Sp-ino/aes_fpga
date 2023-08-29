@@ -47,7 +47,7 @@ architecture Behavioral of tb is
         i_word : in std_logic_vector (word_width_bit - 1 downto 0);
         i_ck : in std_logic;
         i_rst : in std_logic;
-        tx : out std_logic
+        o_tx : out std_logic
     );
     end component;
     
@@ -70,7 +70,7 @@ begin
         i_word => tout,
         i_ck => clock,
         i_rst => rst,
-        tx => tx
+        o_tx => tx
     );
         
     

@@ -21,12 +21,13 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 -- arithmetic functions with Signed or Unsigned values
-use ieee.numeric_std.ALL;
 
 library xil_defaultlib;
 use xil_defaultlib.aes_pkg.all;
 use xil_defaultlib.utils.all;
+use xil_defaultlib.common_pkg.all;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
