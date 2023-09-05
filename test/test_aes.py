@@ -1,5 +1,6 @@
 """
-Script to write data to UART with FTDI
+Write and read data to UART with FTDI to test FPGA
+implementation of AES.
 
 Copyright (c) 2022 Valerio Spinogatti
 Licensed under GNU license

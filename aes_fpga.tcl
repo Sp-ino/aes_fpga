@@ -18,36 +18,23 @@
 proc checkRequiredFiles { origin_dir} {
   set status true
   set files [list \
- "[file normalize "$origin_dir/vivado_project/tb_behav1.wcfg"]"\
- "[file normalize "$origin_dir/vivado_project/tb_behav2.wcfg"]"\
- "[file normalize "$origin_dir/vivado_project/tb_behav3.wcfg"]"\
-  ]
-  foreach ifile $files {
-    if { ![file isfile $ifile] } {
-      puts " Could not find local file $ifile "
-      set status false
-    }
-  }
-
-  set files [list \
  "[file normalize "$origin_dir/src/common_pkg.vhd"]"\
  "[file normalize "$origin_dir/src/aes_pkg.vhd"]"\
  "[file normalize "$origin_dir/src/utils.vhd"]"\
  "[file normalize "$origin_dir/src/aes_ip.vhd"]"\
  "[file normalize "$origin_dir/src/ckdiv_ip.vhd"]"\
  "[file normalize "$origin_dir/src/uart_pkg.vhd"]"\
- "[file normalize "$origin_dir/src/deserializer_ip.vhd"]"\
- "[file normalize "$origin_dir/src/deserializer_ip_wrapper.vhd"]"\
  "[file normalize "$origin_dir/src/uart_rx_ip.vhd"]"\
  "[file normalize "$origin_dir/src/uart_rx_ip_wrapper.vhd"]"\
- "[file normalize "$origin_dir/src/serializer_ip.vhd"]"\
- "[file normalize "$origin_dir/src/serializer_ip_wrapper.vhd"]"\
+ "[file normalize "$origin_dir/src/deserializer_ip.vhd"]"\
+ "[file normalize "$origin_dir/src/deserializer_ip_wrapper.vhd"]"\
  "[file normalize "$origin_dir/src/uart_tx_ip.vhd"]"\
  "[file normalize "$origin_dir/src/uart_tx_ip_wrapper.vhd"]"\
+ "[file normalize "$origin_dir/src/serializer_ip.vhd"]"\
+ "[file normalize "$origin_dir/src/serializer_ip_wrapper.vhd"]"\
  "[file normalize "$origin_dir/src/constr/phys_constr.xdc"]"\
  "[file normalize "$origin_dir/src/constr/timing_constr.xdc"]"\
  "[file normalize "$origin_dir/src/tb/aes_ip_tb.vhd"]"\
- "[file normalize "$origin_dir/vivado_project/aes_fpga.srcs/sim_1/imports/aes_fpga/vivado_project/tb_behav.wcfg"]"\
  "[file normalize "$origin_dir/src/tb/rx_interf_tb.vhd"]"\
  "[file normalize "$origin_dir/src/tb/tx_interf_tb.vhd"]"\
  "[file normalize "$origin_dir/src/tb/top_tb.vhd"]"\
@@ -164,7 +151,6 @@ set_property -name "webtalk.modelsim_export_sim" -value "27" -objects $obj
 set_property -name "webtalk.questa_export_sim" -value "27" -objects $obj
 set_property -name "webtalk.riviera_export_sim" -value "27" -objects $obj
 set_property -name "webtalk.vcs_export_sim" -value "27" -objects $obj
-set_property -name "webtalk.xcelium_export_sim" -value "1" -objects $obj
 set_property -name "webtalk.xsim_export_sim" -value "27" -objects $obj
 set_property -name "webtalk.xsim_launch_sim" -value "135" -objects $obj
 
@@ -182,14 +168,14 @@ set files [list \
  [file normalize "${origin_dir}/src/aes_ip.vhd"] \
  [file normalize "${origin_dir}/src/ckdiv_ip.vhd"] \
  [file normalize "${origin_dir}/src/uart_pkg.vhd"] \
- [file normalize "${origin_dir}/src/deserializer_ip.vhd"] \
- [file normalize "${origin_dir}/src/deserializer_ip_wrapper.vhd"] \
  [file normalize "${origin_dir}/src/uart_rx_ip.vhd"] \
  [file normalize "${origin_dir}/src/uart_rx_ip_wrapper.vhd"] \
- [file normalize "${origin_dir}/src/serializer_ip.vhd"] \
- [file normalize "${origin_dir}/src/serializer_ip_wrapper.vhd"] \
+ [file normalize "${origin_dir}/src/deserializer_ip.vhd"] \
+ [file normalize "${origin_dir}/src/deserializer_ip_wrapper.vhd"] \
  [file normalize "${origin_dir}/src/uart_tx_ip.vhd"] \
  [file normalize "${origin_dir}/src/uart_tx_ip_wrapper.vhd"] \
+ [file normalize "${origin_dir}/src/serializer_ip.vhd"] \
+ [file normalize "${origin_dir}/src/serializer_ip_wrapper.vhd"] \
 ]
 add_files -norecurse -fileset $obj $files
 
@@ -224,16 +210,6 @@ set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/src/deserializer_ip.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
-
-set file "$origin_dir/src/deserializer_ip_wrapper.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL" -objects $file_obj
-
 set file "$origin_dir/src/uart_rx_ip.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
@@ -244,12 +220,12 @@ set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/src/serializer_ip.vhd"
+set file "$origin_dir/src/deserializer_ip.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
 
-set file "$origin_dir/src/serializer_ip_wrapper.vhd"
+set file "$origin_dir/src/deserializer_ip_wrapper.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
@@ -260,6 +236,16 @@ set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
 
 set file "$origin_dir/src/uart_tx_ip_wrapper.vhd"
+set file [file normalize $file]
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "file_type" -value "VHDL" -objects $file_obj
+
+set file "$origin_dir/src/serializer_ip.vhd"
+set file [file normalize $file]
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
+
+set file "$origin_dir/src/serializer_ip_wrapper.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
@@ -312,7 +298,6 @@ if {[string equal [get_filesets -quiet sim_1] ""]} {
 set obj [get_filesets sim_1]
 set files [list \
  [file normalize "${origin_dir}/src/tb/aes_ip_tb.vhd"] \
- [file normalize "${origin_dir}/vivado_project/aes_fpga.srcs/sim_1/imports/aes_fpga/vivado_project/tb_behav.wcfg"] \
 ]
 add_files -norecurse -fileset $obj $files
 
@@ -344,12 +329,6 @@ set files [list \
 ]
 add_files -norecurse -fileset $obj $files
 
-# Add local files from the original project (-no_copy_sources specified)
-set files [list \
- [file normalize "${origin_dir}/vivado_project/tb_behav1.wcfg" ]\
-]
-set added_files [add_files -fileset sim_2 $files]
-
 # Set 'sim_2' fileset file properties for remote files
 set file "$origin_dir/src/tb/rx_interf_tb.vhd"
 set file [file normalize $file]
@@ -378,12 +357,6 @@ set files [list \
 ]
 add_files -norecurse -fileset $obj $files
 
-# Add local files from the original project (-no_copy_sources specified)
-set files [list \
- [file normalize "${origin_dir}/vivado_project/tb_behav2.wcfg" ]\
-]
-set added_files [add_files -fileset sim_3 $files]
-
 # Set 'sim_3' fileset file properties for remote files
 set file "$origin_dir/src/tb/tx_interf_tb.vhd"
 set file [file normalize $file]
@@ -411,12 +384,6 @@ set files [list \
  [file normalize "${origin_dir}/src/tb/top_tb.vhd"] \
 ]
 add_files -norecurse -fileset $obj $files
-
-# Add local files from the original project (-no_copy_sources specified)
-set files [list \
- [file normalize "${origin_dir}/vivado_project/tb_behav3.wcfg" ]\
-]
-set added_files [add_files -fileset sim_4 $files]
 
 # Set 'sim_4' fileset file properties for remote files
 set file "$origin_dir/src/tb/top_tb.vhd"
@@ -450,11 +417,11 @@ if { [get_files common_pkg.vhd] == "" } {
 if { [get_files uart_pkg.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
 }
-if { [get_files deserializer_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip.vhd"
+if { [get_files uart_rx_ip.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip.vhd"
 }
-if { [get_files deserializer_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip_wrapper.vhd"
+if { [get_files uart_rx_ip_wrapper.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip_wrapper.vhd"
 }
 if { [get_files common_pkg.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
@@ -462,11 +429,11 @@ if { [get_files common_pkg.vhd] == "" } {
 if { [get_files uart_pkg.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
 }
-if { [get_files uart_rx_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip.vhd"
+if { [get_files deserializer_ip.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip.vhd"
 }
-if { [get_files uart_rx_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip_wrapper.vhd"
+if { [get_files deserializer_ip_wrapper.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip_wrapper.vhd"
 }
 
 
@@ -610,11 +577,11 @@ if { [get_files common_pkg.vhd] == "" } {
 if { [get_files uart_pkg.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
 }
-if { [get_files serializer_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip.vhd"
+if { [get_files uart_tx_ip.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_tx_ip.vhd"
 }
-if { [get_files serializer_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip_wrapper.vhd"
+if { [get_files uart_tx_ip_wrapper.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_tx_ip_wrapper.vhd"
 }
 if { [get_files common_pkg.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
@@ -622,11 +589,11 @@ if { [get_files common_pkg.vhd] == "" } {
 if { [get_files uart_pkg.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
 }
-if { [get_files uart_tx_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_tx_ip.vhd"
+if { [get_files serializer_ip.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip.vhd"
 }
-if { [get_files uart_tx_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_tx_ip_wrapper.vhd"
+if { [get_files serializer_ip_wrapper.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip_wrapper.vhd"
 }
 
 
@@ -785,17 +752,17 @@ if { [get_files common_pkg.vhd] == "" } {
 if { [get_files uart_pkg.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
 }
-if { [get_files deserializer_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip.vhd"
-}
-if { [get_files deserializer_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip_wrapper.vhd"
-}
 if { [get_files uart_rx_ip.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip.vhd"
 }
 if { [get_files uart_rx_ip_wrapper.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip_wrapper.vhd"
+}
+if { [get_files deserializer_ip.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip.vhd"
+}
+if { [get_files deserializer_ip_wrapper.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip_wrapper.vhd"
 }
 if { [get_files receiver_wrapper.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/vivado_project/aes_fpga.gen/sources_1/bd/receiver/hdl/receiver_wrapper.vhd"
@@ -806,17 +773,17 @@ if { [get_files common_pkg.vhd] == "" } {
 if { [get_files uart_pkg.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
 }
-if { [get_files serializer_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip.vhd"
-}
-if { [get_files serializer_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip_wrapper.vhd"
-}
 if { [get_files uart_tx_ip.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/uart_tx_ip.vhd"
 }
 if { [get_files uart_tx_ip_wrapper.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/uart_tx_ip_wrapper.vhd"
+}
+if { [get_files serializer_ip.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip.vhd"
+}
+if { [get_files serializer_ip_wrapper.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip_wrapper.vhd"
 }
 if { [get_files transmitter_wrapper.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/vivado_project/aes_fpga.gen/sources_1/bd/transmitter/hdl/transmitter_wrapper.vhd"
