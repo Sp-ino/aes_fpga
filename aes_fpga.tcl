@@ -423,6 +423,24 @@ if { [get_files uart_rx_ip.vhd] == "" } {
 if { [get_files uart_rx_ip_wrapper.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip_wrapper.vhd"
 }
+if { [get_files deserializer_ip.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip.vhd"
+}
+if { [get_files deserializer_ip_wrapper.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip_wrapper.vhd"
+}
+if { [get_files common_pkg.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
+}
+if { [get_files uart_pkg.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
+}
+if { [get_files uart_rx_ip.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip.vhd"
+}
+if { [get_files uart_rx_ip_wrapper.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip_wrapper.vhd"
+}
 if { [get_files common_pkg.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
 }
@@ -567,10 +585,24 @@ cr_bd_receiver ""
 set_property REGISTERED_WITH_MANAGER "1" [get_files receiver.bd ] 
 set_property SYNTH_CHECKPOINT_MODE "Hierarchical" [get_files receiver.bd ] 
 
-
-# Create wrapper file for receiver.bd
-make_wrapper -files [get_files receiver.bd] -import -top
-
+if { [get_files common_pkg.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
+}
+if { [get_files uart_pkg.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
+}
+if { [get_files uart_tx_ip.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_tx_ip.vhd"
+}
+if { [get_files uart_tx_ip_wrapper.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_tx_ip_wrapper.vhd"
+}
+if { [get_files serializer_ip.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip.vhd"
+}
+if { [get_files serializer_ip_wrapper.vhd] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip_wrapper.vhd"
+}
 if { [get_files common_pkg.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
 }
@@ -727,10 +759,6 @@ cr_bd_transmitter ""
 set_property REGISTERED_WITH_MANAGER "1" [get_files transmitter.bd ] 
 set_property SYNTH_CHECKPOINT_MODE "Hierarchical" [get_files transmitter.bd ] 
 
-
-# Create wrapper file for transmitter.bd
-make_wrapper -files [get_files transmitter.bd] -import -top
-
 if { [get_files common_pkg.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
 }
@@ -746,55 +774,18 @@ if { [get_files aes_ip.vhd] == "" } {
 if { [get_files ckdiv_ip.vhd] == "" } {
   import_files -quiet -fileset sources_1 "$origin_dir/src/ckdiv_ip.vhd"
 }
-if { [get_files common_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
-}
-if { [get_files uart_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
-}
-if { [get_files uart_rx_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip.vhd"
-}
-if { [get_files uart_rx_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip_wrapper.vhd"
-}
-if { [get_files deserializer_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip.vhd"
-}
-if { [get_files deserializer_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip_wrapper.vhd"
-}
-if { [get_files receiver_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/vivado_project/aes_fpga.gen/sources_1/bd/receiver/hdl/receiver_wrapper.vhd"
-}
-if { [get_files common_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
-}
-if { [get_files uart_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
-}
-if { [get_files uart_tx_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_tx_ip.vhd"
-}
-if { [get_files uart_tx_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_tx_ip_wrapper.vhd"
-}
-if { [get_files serializer_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip.vhd"
-}
-if { [get_files serializer_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip_wrapper.vhd"
-}
-if { [get_files transmitter_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/vivado_project/aes_fpga.gen/sources_1/bd/transmitter/hdl/transmitter_wrapper.vhd"
-}
 
 
 # Proc to create BD top
 proc cr_bd_top { parentCell } {
 # The design that will be created by this Tcl proc contains the following 
 # module references:
-# aes_ip, ckdiv_ip, receiver_wrapper, transmitter_wrapper
+# aes_ip, ckdiv_ip
+
+
+# The design that will be created by this Tcl proc contains the following 
+# block design container source references:
+# receiver, transmitter
 
 
 
@@ -814,8 +805,6 @@ proc cr_bd_top { parentCell } {
      set list_check_mods "\ 
   aes_ip\
   ckdiv_ip\
-  receiver_wrapper\
-  transmitter_wrapper\
   "
 
    set list_mods_missing ""
@@ -831,6 +820,45 @@ proc cr_bd_top { parentCell } {
       catch {common::send_gid_msg -ssname BD::TCL -id 2021 -severity "ERROR" "The following module(s) are not found in the project: $list_mods_missing" }
       common::send_gid_msg -ssname BD::TCL -id 2022 -severity "INFO" "Please add source files for the missing module(s) above."
       set bCheckIPsPassed 0
+   }
+}
+
+  ##################################################################
+  # CHECK Block Design Container Sources
+  ##################################################################
+  set bCheckSources 1
+  set list_bdc_active "receiver, transmitter"
+
+  array set map_bdc_missing {}
+  set map_bdc_missing(ACTIVE) ""
+  set map_bdc_missing(BDC) ""
+
+  if { $bCheckSources == 1 } {
+     set list_check_srcs "\ 
+  receiver \
+  transmitter \
+  "
+
+   common::send_gid_msg -ssname BD::TCL -id 2056 -severity "INFO" "Checking if the following sources for block design container exist in the project: $list_check_srcs .\n\n"
+
+   foreach src $list_check_srcs {
+      if { [can_resolve_reference $src] == 0 } {
+         if { [lsearch $list_bdc_active $src] != -1 } {
+            set map_bdc_missing(ACTIVE) "$map_bdc_missing(ACTIVE) $src"
+         } else {
+            set map_bdc_missing(BDC) "$map_bdc_missing(BDC) $src"
+         }
+      }
+   }
+
+   if { [llength $map_bdc_missing(ACTIVE)] > 0 } {
+      catch {common::send_gid_msg -ssname BD::TCL -id 2057 -severity "ERROR" "The following source(s) of Active variants are not found in the project: $map_bdc_missing(ACTIVE)" }
+      common::send_gid_msg -ssname BD::TCL -id 2060 -severity "INFO" "Please add source files for the missing source(s) above."
+      set bCheckIPsPassed 0
+   }
+   if { [llength $map_bdc_missing(BDC)] > 0 } {
+      catch {common::send_gid_msg -ssname BD::TCL -id 2059 -severity "WARNING" "The following source(s) of variants are not found in the project: $map_bdc_missing(BDC)" }
+      common::send_gid_msg -ssname BD::TCL -id 2060 -severity "INFO" "Please add source files for the missing source(s) above."
    }
 }
 
@@ -897,38 +925,38 @@ proc cr_bd_top { parentCell } {
      return 1
    }
   
-  # Create instance: receiver_wrapper_0, and set properties
-  set block_name receiver_wrapper
-  set block_cell_name receiver_wrapper_0
-  if { [catch {set receiver_wrapper_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   } elseif { $receiver_wrapper_0 eq "" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   }
-  
-  # Create instance: transmitter_wrapper_0, and set properties
-  set block_name transmitter_wrapper
-  set block_cell_name transmitter_wrapper_0
-  if { [catch {set transmitter_wrapper_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   } elseif { $transmitter_wrapper_0 eq "" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   }
-  
+  # Create instance: receiver_0, and set properties
+  set receiver_0 [ create_bd_cell -type container -reference receiver receiver_0 ]
+  set_property -dict [ list \
+   CONFIG.ACTIVE_SIM_BD {receiver.bd} \
+   CONFIG.ACTIVE_SYNTH_BD {receiver.bd} \
+   CONFIG.ENABLE_DFX {0} \
+   CONFIG.LIST_SIM_BD {receiver.bd} \
+   CONFIG.LIST_SYNTH_BD {receiver.bd} \
+   CONFIG.LOCK_PROPAGATE {0} \
+ ] $receiver_0
+
+  # Create instance: transmitter_0, and set properties
+  set transmitter_0 [ create_bd_cell -type container -reference transmitter transmitter_0 ]
+  set_property -dict [ list \
+   CONFIG.ACTIVE_SIM_BD {transmitter.bd} \
+   CONFIG.ACTIVE_SYNTH_BD {transmitter.bd} \
+   CONFIG.ENABLE_DFX {0} \
+   CONFIG.LIST_SIM_BD {transmitter.bd} \
+   CONFIG.LIST_SYNTH_BD {transmitter.bd} \
+   CONFIG.LOCK_PROPAGATE {0} \
+ ] $transmitter_0
+
   # Create port connections
-  connect_bd_net -net aes_ip_0_o_textout [get_bd_pins aes_ip_0/o_textout] [get_bd_pins transmitter_wrapper_0/i_word]
-  connect_bd_net -net ckdiv_ip_0_o_ckout [get_bd_pins aes_ip_0/i_ck] [get_bd_pins ckdiv_ip_0/o_ckout] [get_bd_pins receiver_wrapper_0/i_ckin] [get_bd_pins transmitter_wrapper_0/i_ck]
+  connect_bd_net -net ckdiv_ip_0_o_ckout [get_bd_pins aes_ip_0/i_ck] [get_bd_pins ckdiv_ip_0/o_ckout] [get_bd_pins receiver_0/i_ckin] [get_bd_pins transmitter_0/i_ck]
   connect_bd_net -net i_ckin_1 [get_bd_ports i_ckin] [get_bd_pins ckdiv_ip_0/i_ck]
-  connect_bd_net -net i_rst_1 [get_bd_ports i_rst] [get_bd_pins aes_ip_0/i_rst] [get_bd_pins receiver_wrapper_0/i_rst] [get_bd_pins transmitter_wrapper_0/i_rst]
-  connect_bd_net -net i_rx_1 [get_bd_ports i_rx] [get_bd_pins receiver_wrapper_0/i_rx]
-  connect_bd_net -net i_transmit_1 [get_bd_ports i_transmit] [get_bd_pins transmitter_wrapper_0/i_transmit]
-  connect_bd_net -net receiver_wrapper_0_o_textin [get_bd_pins aes_ip_0/i_textin] [get_bd_pins receiver_wrapper_0/o_word]
-  connect_bd_net -net receiver_wrapper_0_o_word_valid [get_bd_pins aes_ip_0/i_enable] [get_bd_pins receiver_wrapper_0/o_word_valid]
-  connect_bd_net -net transmitter_wrapper_0_tx [get_bd_ports o_tx] [get_bd_pins transmitter_wrapper_0/o_tx]
+  connect_bd_net -net i_rst_1 [get_bd_ports i_rst] [get_bd_pins aes_ip_0/i_rst] [get_bd_pins receiver_0/i_rst] [get_bd_pins transmitter_0/i_rst]
+  connect_bd_net -net i_rx_1 [get_bd_ports i_rx] [get_bd_pins receiver_0/i_rx]
+  connect_bd_net -net i_transmit_1 [get_bd_ports i_transmit] [get_bd_pins transmitter_0/i_transmit]
+  connect_bd_net -net i_word_1 [get_bd_pins aes_ip_0/o_textout] [get_bd_pins transmitter_0/i_word]
+  connect_bd_net -net receiver_0_o_word [get_bd_pins aes_ip_0/i_textin] [get_bd_pins receiver_0/o_word]
+  connect_bd_net -net receiver_0_o_word_valid [get_bd_pins aes_ip_0/i_enable] [get_bd_pins receiver_0/o_word_valid]
+  connect_bd_net -net transmitter_0_o_tx [get_bd_ports o_tx] [get_bd_pins transmitter_0/o_tx]
 
   # Create address segments
 
@@ -948,6 +976,46 @@ set_property SYNTH_CHECKPOINT_MODE "Hierarchical" [get_files top.bd ]
 
 # Create wrapper file for top.bd
 make_wrapper -files [get_files top.bd] -import -top
+
+
+# Create wrapper file for receiver.bd
+make_wrapper -files [get_files receiver.bd] -import -top
+
+
+# Create wrapper file for transmitter.bd
+make_wrapper -files [get_files transmitter.bd] -import -top
+
+generate_target all [get_files top.bd]
+
+generate_target all [get_files receiver.bd]
+
+generate_target all [get_files transmitter.bd]
+
+# Set 'receiver_inst_0' fileset object
+set obj [get_filesets receiver_inst_0]
+# Set 'receiver_inst_0' fileset file properties for remote files
+# None
+
+# Set 'receiver_inst_0' fileset file properties for local files
+# None
+
+# Set 'receiver_inst_0' fileset properties
+set obj [get_filesets receiver_inst_0]
+set_property -name "top" -value "receiver_inst_0" -objects $obj
+set_property -name "top_auto_set" -value "0" -objects $obj
+
+# Set 'transmitter_inst_0' fileset object
+set obj [get_filesets transmitter_inst_0]
+# Set 'transmitter_inst_0' fileset file properties for remote files
+# None
+
+# Set 'transmitter_inst_0' fileset file properties for local files
+# None
+
+# Set 'transmitter_inst_0' fileset properties
+set obj [get_filesets transmitter_inst_0]
+set_property -name "top" -value "transmitter_inst_0" -objects $obj
+set_property -name "top_auto_set" -value "0" -objects $obj
 
 set idrFlowPropertiesConstraints ""
 catch {
@@ -975,7 +1043,6 @@ if { $obj != "" } {
 
 }
 set obj [get_runs synth_1]
-set_property -name "needs_refresh" -value "1" -objects $obj
 set_property -name "part" -value "xc7a35tcpg236-1" -objects $obj
 set_property -name "strategy" -value "Vivado Synthesis Defaults" -objects $obj
 
@@ -1190,7 +1257,6 @@ set_property -name "options.warn_on_violation" -value "1" -objects $obj
 
 }
 set obj [get_runs impl_1]
-set_property -name "needs_refresh" -value "1" -objects $obj
 set_property -name "part" -value "xc7a35tcpg236-1" -objects $obj
 set_property -name "strategy" -value "Vivado Implementation Defaults" -objects $obj
 set_property -name "steps.write_bitstream.args.bin_file" -value "1" -objects $obj

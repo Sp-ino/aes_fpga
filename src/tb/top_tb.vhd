@@ -38,7 +38,7 @@ end tb;
 
 architecture Behavioral of tb is
 
-    component top_wrapper is
+    component top is
     port (
         i_ckin : in std_logic;
         i_rst : in std_logic;
@@ -62,7 +62,7 @@ architecture Behavioral of tb is
 
 begin
 
-    top: top_wrapper
+    top_block: top
     port map (
         i_ckin => clock,
         i_rst => rst,
