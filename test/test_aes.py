@@ -2,7 +2,7 @@
 Write and read data to UART with FTDI to test FPGA
 implementation of AES.
 
-Copyright (c) 2022 Valerio Spinogatti
+Copyright (c) 2023 Valerio Spinogatti
 Licensed under GNU license
 
 ftdi_read_uart.py

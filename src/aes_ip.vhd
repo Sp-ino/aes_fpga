@@ -1,14 +1,11 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Engineer: Valerio Spinogatti
 -- 
--- Create Date: 29.05.2022 22:08:37
--- Design Name: 
 -- Module Name: aes_ip - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
--- Description: 
+-- Description: partial implementation of AES core (single round)
 -- 
 -- Dependencies: 
 -- 
@@ -16,6 +13,9 @@
 -- Revision 0.01 - File Created
 -- Additional Comments:
 -- 
+-- 
+-- Copyright (c) 2023 Valerio Spinogatti
+-- Licensed under Apache license
 ----------------------------------------------------------------------------------
 
 

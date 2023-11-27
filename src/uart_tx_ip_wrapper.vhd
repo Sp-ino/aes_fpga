@@ -1,9 +1,6 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Engineer: Valerio Spinogatti
 -- 
--- Create Date: 13.07.2022 14:05
--- Design Name: 
 -- Module Name: uart_rx_ip - Behavioral
 -- Project Name: 
 -- Target Devices: 
@@ -16,6 +13,9 @@
 -- Revision 0.01 - File Created
 -- Additional Comments:
 -- 
+-- 
+-- Copyright (c) 2023 Valerio Spinogatti
+-- Licensed under Apache license
 ----------------------------------------------------------------------------------
 
 

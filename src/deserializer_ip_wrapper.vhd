@@ -1,3 +1,9 @@
+-- Wrapper for deserializer block
+-- 
+-- Copyright (c) 2023 Valerio Spinogatti
+-- Licensed under Apache license
+
+
 library ieee;
 use ieee.std_logic_1164.all;
 
