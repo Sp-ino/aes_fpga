@@ -39,10 +39,13 @@ entity deserializer_ip is
         i_byte_valid : in std_logic;
         i_byte : in std_logic_vector (byte_width_bit - 1 downto 0);
         i_ck : in std_logic;
+        i_acquire_textin : in std_logic;
         i_rst : in std_logic;
         o_word : out std_logic_vector (word_width_bit - 1 downto 0);
         o_data_seen : out std_logic;
-        o_word_valid : out std_logic
+        o_buffer_full : out std_logic;
+        o_flush_uart : out std_logic;
+        o_count_status : out std_logic_vector(4 downto 0)
     );
 end deserializer_ip;
 
@@ -58,13 +61,14 @@ begin
 
     compute_next_state: process(all)
     begin
-
         if i_rst = '1' then
+            w_next_state <= idle;
+        elsif i_acquire_textin = '1' then
             w_next_state <= idle;
         else
             case r_present_state is
             when idle =>
-                if i_byte_valid = '0' then
+                if i_byte_valid = '0' then  
                     w_next_state <= idle;
                 else                        
                     w_next_state <= save;
@@ -81,13 +85,11 @@ begin
                 w_next_state <= idle;
             end case;
         end if;        
-
     end process compute_next_state;
 
 
     state_reg: process(i_ck)
     begin
-
         if rising_edge(i_ck) then
             if i_rst = '1' then
                 r_present_state <= idle;
@@ -95,19 +97,24 @@ begin
                 r_present_state <= w_next_state;
             end if;
         end if;
-
     end process state_reg;
 
 
     do_stuff: process(i_ck)
     begin
-
         if rising_edge(i_ck) then
             if i_rst = '1' then
                 r_num <= 0;
                 o_word <= (others => '0');
                 o_data_seen <= '0';
-                o_word_valid <= '0';
+                o_buffer_full <= '0';
+                o_flush_uart <= '0'; 
+            elsif i_acquire_textin = '1' then
+                r_num <= 0;
+                o_word <= (others => '0');
+                o_data_seen <= '0';
+                o_buffer_full <= '0';
+                o_flush_uart <= '1'; 
             else
                 case r_present_state is
                 when idle =>
@@ -115,19 +122,24 @@ begin
                         o_word <= (others => '0');
                     end if;
                     o_data_seen <= '0';
+                    o_flush_uart <= '0';
                 when save =>
                     o_word(r_num*8 + 7 downto r_num*8) <= i_byte;
                     r_num <= r_num + 1;
                     o_data_seen <= '1';
+                    o_buffer_full <= '0';
                 when pause =>
                     o_data_seen <= '0';
+                    if r_num = word_width_byte then
+                        o_buffer_full <= '1';
+                    end if;
                 when reset_count  =>
                     r_num <= 0;
-                    o_word_valid <= '1';
                 end case;
             end if;
         end if;
-    
     end process do_stuff;
+
+    o_count_status <= std_logic_vector(to_unsigned(r_num, 5));
 
 end Behavioral;

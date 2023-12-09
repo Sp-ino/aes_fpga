@@ -35,7 +35,7 @@ use xil_defaultlib.common_pkg.all;
 
 entity serializer_ip is
     port (
-        i_transmit : in std_logic;
+        i_send_textout : in std_logic;
         i_tx_busy: in std_logic;
         i_word : in std_logic_vector (word_width_bit - 1 downto 0);
         i_ck : in std_logic;
@@ -63,7 +63,7 @@ begin
         else
             case r_present_state is
             when idle =>
-                if i_transmit = '1' then
+                if i_send_textout = '1' then
                     if i_tx_busy = '0' then
                         w_next_state <= assert_valid;
                     else

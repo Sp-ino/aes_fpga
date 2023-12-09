@@ -37,7 +37,7 @@ architecture Behavioral of tb is
 
     component aes_ip is
         port (
-            i_enable: in std_logic;
+            i_start_encryption: in std_logic;
             i_textin : in std_logic_vector (word_width_bit - 1 downto 0);
             i_rst : in std_logic;
             i_ck : in std_logic;
@@ -51,7 +51,7 @@ architecture Behavioral of tb is
 
     signal clock: std_logic;
     signal reset: std_logic;
-    signal enable: std_logic;
+    signal start: std_logic;
     signal tin: std_logic_vector (word_width_bit - 1 downto 0);
     signal tout: std_logic_vector (word_width_bit - 1 downto 0);
 
@@ -59,7 +59,7 @@ begin
 
     aes: aes_ip
     port map (
-        i_enable => enable,
+        i_start_encryption => start,
         i_textin => tin,
         i_rst => reset,
         i_ck => clock,
@@ -81,16 +81,16 @@ begin
         reset <= '1';
         wait for 2*tck;
         reset <= '0';
-        enable <= '1';
+        start <= '1';
         tin <= std_logic_vector(to_unsigned(in2, 128));
         wait for tck;
-        enable <= '0';
+        start <= '0';
         wait for 4*tck;
         
         tin <= std_logic_vector(to_unsigned(in1, 128));
-        enable <= '1';
+        start <= '1';
         wait for tck;
-        enable <= '0';
+        start <= '0';
         wait for 4*tck;
 
         assert true report "End of testbench reached!" severity failure;

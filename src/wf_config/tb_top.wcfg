@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="aes_pkg" />
+            <top_module name="common_pkg" />
+            <top_module name="tb" />
+            <top_module name="uart_pkg" />
+            <top_module name="utils" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000000000 ms"></ZoomStartTime>
+      <ZoomEndTime time="14.244300001 ms"></ZoomEndTime>
+      <Cursor1Time time="14.244300000 ms"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="366"></NameColumnWidth>
+      <ValueColumnWidth column_width="176"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="22" />
+   <wvobject fp_name="/tb/send_tout" type="logic">
+      <obj_property name="ElementShortName">send_tout</obj_property>
+      <obj_property name="ObjectShortName">send_tout</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/tx" type="logic">
+      <obj_property name="ElementShortName">tx</obj_property>
+      <obj_property name="ObjectShortName">tx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/clock" type="logic">
+      <obj_property name="ElementShortName">clock</obj_property>
+      <obj_property name="ObjectShortName">clock</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/start_encryption" type="logic">
+      <obj_property name="ElementShortName">start_encryption</obj_property>
+      <obj_property name="ObjectShortName">start_encryption</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/rx_full" type="logic">
+      <obj_property name="ElementShortName">rx_full</obj_property>
+      <obj_property name="ObjectShortName">rx_full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/tck_fast" type="other">
+      <obj_property name="ElementShortName">tck_fast</obj_property>
+      <obj_property name="ObjectShortName">tck_fast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/tck" type="other">
+      <obj_property name="ElementShortName">tck</obj_property>
+      <obj_property name="ObjectShortName">tck</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/in1" type="other">
+      <obj_property name="ElementShortName">in1</obj_property>
+      <obj_property name="ObjectShortName">in1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/in2" type="other">
+      <obj_property name="ElementShortName">in2</obj_property>
+      <obj_property name="ObjectShortName">in2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/top_block/receiver_0/uart_rx_ip_0/o_data_out" type="array">
+      <obj_property name="ElementShortName">o_data_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">o_data_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/top_block/receiver_0/uart_rx_ip_0/w_next_state" type="other">
+      <obj_property name="ElementShortName">w_next_state</obj_property>
+      <obj_property name="ObjectShortName">w_next_state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/top_block/receiver_0/uart_rx_ip_0/r_present_state" type="other">
+      <obj_property name="ElementShortName">r_present_state</obj_property>
+      <obj_property name="ObjectShortName">r_present_state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/rx" type="logic">
+      <obj_property name="ElementShortName">rx</obj_property>
+      <obj_property name="ObjectShortName">rx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/read_tin" type="logic">
+      <obj_property name="ElementShortName">read_tin</obj_property>
+      <obj_property name="ObjectShortName">read_tin</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/top_block/receiver_0/deserializer_ip_wrap_0/r_num" type="other">
+      <obj_property name="ElementShortName">r_num</obj_property>
+      <obj_property name="ObjectShortName">r_num</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/top_block/receiver_0/deserializer_ip_wrap_0/r_present_state" type="other">
+      <obj_property name="ElementShortName">r_present_state</obj_property>
+      <obj_property name="ObjectShortName">r_present_state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/top_block/ckdiv_ip_0/o_ckout" type="logic">
+      <obj_property name="ElementShortName">o_ckout</obj_property>
+      <obj_property name="ObjectShortName">o_ckout</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/top_block/receiver_0/flush" type="logic">
+      <obj_property name="ElementShortName">flush</obj_property>
+      <obj_property name="ObjectShortName">flush</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/count_status" type="array">
+      <obj_property name="ElementShortName">count_status[4:0]</obj_property>
+      <obj_property name="ObjectShortName">count_status[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/top_block/receiver_0/o_word" type="array">
+      <obj_property name="ElementShortName">o_word[127:0]</obj_property>
+      <obj_property name="ObjectShortName">o_word[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/top_block/o_rx_buffer_full" type="logic">
+      <obj_property name="ElementShortName">o_rx_buffer_full</obj_property>
+      <obj_property name="ObjectShortName">o_rx_buffer_full</obj_property>
+   </wvobject>
+</wave_config>

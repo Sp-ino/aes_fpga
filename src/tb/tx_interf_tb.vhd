@@ -43,7 +43,7 @@ architecture Behavioral of tb is
 
     component transmitter_wrapper is
     port (
-        i_transmit : in std_logic;
+        i_send_textout : in std_logic;
         i_word : in std_logic_vector (word_width_bit - 1 downto 0);
         i_ck : in std_logic;
         i_rst : in std_logic;
@@ -66,7 +66,7 @@ begin
 
     top: transmitter_wrapper
     port map (
-        i_transmit => transmit,
+        i_send_textout => transmit,
         i_word => tout,
         i_ck => clock,
         i_rst => rst,

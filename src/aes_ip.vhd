@@ -41,7 +41,7 @@ use xil_defaultlib.common_pkg.all;
 -- first round up to the mix column step
 entity aes_ip is
     port (
-        i_enable: in std_logic;
+        i_start_encryption: in std_logic;
         i_textin : in std_logic_vector (word_width_bit - 1 downto 0);
         i_rst : in std_logic;
         i_ck : in std_logic;
@@ -60,13 +60,13 @@ architecture behavioral of aes_ip is
 
 begin
 
-    -- Simply a conversion from std_logic_vector to the matrix type I use to manage internal operations
+    -- Simply a conversion from std_logic_vector to the matrix type used to manage internal operations
     w_iword_width_byte <= in_conversion(i_textin);
 
     -- Perform an AddRoundKey steps
     add_round_key: process(i_ck)
     begin
-        if rising_edge(i_ck) and i_enable = '1' then
+        if rising_edge(i_ck) and i_start_encryption = '1' then
             if i_rst = '1' then
                 r_addrkey_out <= (others => (others => (others => '0')));
             else
