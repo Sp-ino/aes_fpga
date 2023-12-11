@@ -98,28 +98,38 @@ def main():
 
     # Main while loop
     while True:
-        received_bytes = None
-        msg = input("Insert 16-byte message to send. The message must be a string that represents bytes in hexadecimal format (a total of 32 characters): ")
-        # bytes_to_send = bytes(msg, "utf-8")
-        try:
-            bytes_to_send = bytes.fromhex(msg)
-        except ValueError:
-            print("Wrong message format! The message must be a string representing bytes in hexadecimal notation. The only allowed characters are 0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f.")
-            continue
-        n_sent_bytes = ftdi_dev.write(bytes_to_send)
-        print(f"Sent {n_sent_bytes} bytes. Now press a pushbutton connected to pin T17 of the FPGA to receive the response.")
-
-        while received_bytes == None:
-            try:
-                received_bytes = ftdi_dev.read(16)
-            except UnicodeDecodeError as e:
-                print("\nThere was an error while decoding received bytes. Maybe some bytes have been corrupted.\n")
-                print(e)
-            print(f"Received the following bytes: {received_bytes.hex()}")
-
-        time.sleep(0.5)
+        ftdi_dev.flush()
         ftdi_dev.reset_input_buffer()
         ftdi_dev.reset_output_buffer()
+
+        action = input("\nWhat would you like to do?\n0 --> write textin/key\n1 --> read textout\n> ")
+
+        if action == "0":
+            received_bytes = None
+            msg = input("Insert 16-byte message to send. The message must be a string that represents bytes in hexadecimal format (a total of 32 characters): ")
+            # bytes_to_send = bytes(msg, "utf-8")
+            try:
+                bytes_to_send = bytes.fromhex(msg)
+            except ValueError:
+                print("Wrong message format! The message must be a string representing bytes in hexadecimal notation. The only allowed characters are 0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f.")
+                continue
+            n_sent_bytes = ftdi_dev.write(bytes_to_send)
+            print(f"Sent {n_sent_bytes} bytes.")
+
+        elif action == "1":
+            print("Press pushbutton connected to pin T17 of the FPGA to receive a response.")
+            while received_bytes == None:
+                try:
+                    received_bytes = ftdi_dev.read(16)
+                except UnicodeDecodeError as e:
+                    print("\nThere was an error while decoding received bytes. Maybe some bytes have been corrupted.\n")
+                    print(e)
+                print(f"Received the following bytes: {received_bytes.hex()}")
+        
+        else:
+            print("Invalid option selected. Enter 0 or 1 to select an action.")
+
+        time.sleep(0.1)
 
 
 if __name__ == "__main__":
