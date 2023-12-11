@@ -37,6 +37,7 @@ entity uart_rx_ip is
         i_rx : in std_logic;
         i_rst : in std_logic;
         i_data_seen : in std_logic;
+        i_flush_data : in std_logic;
         o_data_valid : out std_logic;
         o_data_out : out std_logic_vector (byte_width_bit - 1 downto 0)
     );
@@ -60,6 +61,8 @@ begin
     begin
 
         if i_rst = '1' then
+            w_next_state <= idle;
+        elsif i_flush_data = '1' then
             w_next_state <= idle;
         else
             case r_present_state is

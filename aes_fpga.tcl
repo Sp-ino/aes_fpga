@@ -1,9 +1,9 @@
 #*****************************************************************************************
-# Vivado (TM) v2021.1 (64-bit)
+# Vivado (TM) v2022.1 (64-bit)
 #
 # aes_fpga.tcl: Tcl script for re-creating project 'aes_fpga'
 #
-# IP Build 3246043 on Fri Jun 11 00:30:35 MDT 2021
+# IP Build 3524634 on Mon Apr 18 20:55:01 MDT 2022
 #
 # This file contains the Vivado Tcl commands for re-creating the project to the state*
 # when this script was generated. In order to re-create the project, please source this
@@ -23,21 +23,21 @@ proc checkRequiredFiles { origin_dir} {
  "[file normalize "$origin_dir/src/utils.vhd"]"\
  "[file normalize "$origin_dir/src/aes_ip.vhd"]"\
  "[file normalize "$origin_dir/src/ckdiv_ip.vhd"]"\
+ "[file normalize "$origin_dir/src/receiver.vhd"]"\
+ "[file normalize "$origin_dir/src/transmitter.vhd"]"\
  "[file normalize "$origin_dir/src/uart_pkg.vhd"]"\
- "[file normalize "$origin_dir/src/uart_rx_ip.vhd"]"\
- "[file normalize "$origin_dir/src/uart_rx_ip_wrapper.vhd"]"\
  "[file normalize "$origin_dir/src/deserializer_ip.vhd"]"\
- "[file normalize "$origin_dir/src/deserializer_ip_wrapper.vhd"]"\
- "[file normalize "$origin_dir/src/uart_tx_ip.vhd"]"\
- "[file normalize "$origin_dir/src/uart_tx_ip_wrapper.vhd"]"\
  "[file normalize "$origin_dir/src/serializer_ip.vhd"]"\
- "[file normalize "$origin_dir/src/serializer_ip_wrapper.vhd"]"\
+ "[file normalize "$origin_dir/src/uart_rx_ip.vhd"]"\
+ "[file normalize "$origin_dir/src/uart_tx_ip.vhd"]"\
+ "[file normalize "$origin_dir/src/top.vhd"]"\
  "[file normalize "$origin_dir/src/constr/phys_constr.xdc"]"\
  "[file normalize "$origin_dir/src/constr/timing_constr.xdc"]"\
  "[file normalize "$origin_dir/src/tb/aes_ip_tb.vhd"]"\
  "[file normalize "$origin_dir/src/tb/rx_interf_tb.vhd"]"\
  "[file normalize "$origin_dir/src/tb/tx_interf_tb.vhd"]"\
  "[file normalize "$origin_dir/src/tb/top_tb.vhd"]"\
+ "[file normalize "$origin_dir/src/wf_config/tb_top.wcfg"]"\
   ]
   foreach ifile $files {
     if { ![file isfile $ifile] } {
@@ -135,6 +135,7 @@ set proj_dir [get_property directory [current_project]]
 # Set project properties
 set obj [current_project]
 set_property -name "default_lib" -value "xil_defaultlib" -objects $obj
+set_property -name "enable_resource_estimation" -value "0" -objects $obj
 set_property -name "enable_vhdl_2008" -value "1" -objects $obj
 set_property -name "ip_cache_permissions" -value "read write" -objects $obj
 set_property -name "ip_output_repo" -value "$proj_dir/${_xil_proj_name_}.cache/ip" -objects $obj
@@ -143,6 +144,22 @@ set_property -name "part" -value "xc7a35tcpg236-1" -objects $obj
 set_property -name "revised_directory_structure" -value "1" -objects $obj
 set_property -name "sim.central_dir" -value "$proj_dir/${_xil_proj_name_}.ip_user_files" -objects $obj
 set_property -name "sim.ip.auto_export_scripts" -value "1" -objects $obj
+set_property -name "simulator.activehdl_gcc_version" -value "9.3.0" -objects $obj
+set_property -name "simulator.activehdl_version" -value "12.0" -objects $obj
+set_property -name "simulator.ies_gcc_version" -value "6.2.0" -objects $obj
+set_property -name "simulator.ies_version" -value "15.20.083" -objects $obj
+set_property -name "simulator.modelsim_gcc_version" -value "7.4.0" -objects $obj
+set_property -name "simulator.modelsim_version" -value "2021.3" -objects $obj
+set_property -name "simulator.questa_gcc_version" -value "7.4.0" -objects $obj
+set_property -name "simulator.questa_version" -value "2021.3" -objects $obj
+set_property -name "simulator.riviera_gcc_version" -value "9.3.0" -objects $obj
+set_property -name "simulator.riviera_version" -value "2021.04" -objects $obj
+set_property -name "simulator.vcs_gcc_version" -value "6.2.0" -objects $obj
+set_property -name "simulator.vcs_version" -value "R-2020.12" -objects $obj
+set_property -name "simulator.xcelium_gcc_version" -value "6.3" -objects $obj
+set_property -name "simulator.xcelium_version" -value "20.09.006" -objects $obj
+set_property -name "simulator.xsim_gcc_version" -value "6.2.0" -objects $obj
+set_property -name "simulator.xsim_version" -value "2022.1" -objects $obj
 set_property -name "simulator_language" -value "Mixed" -objects $obj
 set_property -name "target_language" -value "VHDL" -objects $obj
 set_property -name "webtalk.activehdl_export_sim" -value "27" -objects $obj
@@ -152,7 +169,7 @@ set_property -name "webtalk.questa_export_sim" -value "27" -objects $obj
 set_property -name "webtalk.riviera_export_sim" -value "27" -objects $obj
 set_property -name "webtalk.vcs_export_sim" -value "27" -objects $obj
 set_property -name "webtalk.xsim_export_sim" -value "27" -objects $obj
-set_property -name "webtalk.xsim_launch_sim" -value "135" -objects $obj
+set_property -name "webtalk.xsim_launch_sim" -value "238" -objects $obj
 
 # Create 'sources_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sources_1] ""]} {
@@ -167,15 +184,14 @@ set files [list \
  [file normalize "${origin_dir}/src/utils.vhd"] \
  [file normalize "${origin_dir}/src/aes_ip.vhd"] \
  [file normalize "${origin_dir}/src/ckdiv_ip.vhd"] \
+ [file normalize "${origin_dir}/src/receiver.vhd"] \
+ [file normalize "${origin_dir}/src/transmitter.vhd"] \
  [file normalize "${origin_dir}/src/uart_pkg.vhd"] \
- [file normalize "${origin_dir}/src/uart_rx_ip.vhd"] \
- [file normalize "${origin_dir}/src/uart_rx_ip_wrapper.vhd"] \
  [file normalize "${origin_dir}/src/deserializer_ip.vhd"] \
- [file normalize "${origin_dir}/src/deserializer_ip_wrapper.vhd"] \
- [file normalize "${origin_dir}/src/uart_tx_ip.vhd"] \
- [file normalize "${origin_dir}/src/uart_tx_ip_wrapper.vhd"] \
  [file normalize "${origin_dir}/src/serializer_ip.vhd"] \
- [file normalize "${origin_dir}/src/serializer_ip_wrapper.vhd"] \
+ [file normalize "${origin_dir}/src/uart_rx_ip.vhd"] \
+ [file normalize "${origin_dir}/src/uart_tx_ip.vhd"] \
+ [file normalize "${origin_dir}/src/top.vhd"] \
 ]
 add_files -norecurse -fileset $obj $files
 
@@ -205,17 +221,17 @@ set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/src/uart_pkg.vhd"
+set file "$origin_dir/src/receiver.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/src/uart_rx_ip.vhd"
+set file "$origin_dir/src/transmitter.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
+set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/src/uart_rx_ip_wrapper.vhd"
+set file "$origin_dir/src/uart_pkg.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
@@ -225,27 +241,22 @@ set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
 
-set file "$origin_dir/src/deserializer_ip_wrapper.vhd"
+set file "$origin_dir/src/serializer_ip.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL" -objects $file_obj
+set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
+
+set file "$origin_dir/src/uart_rx_ip.vhd"
+set file [file normalize $file]
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
 
 set file "$origin_dir/src/uart_tx_ip.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
 
-set file "$origin_dir/src/uart_tx_ip_wrapper.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL" -objects $file_obj
-
-set file "$origin_dir/src/serializer_ip.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
-
-set file "$origin_dir/src/serializer_ip_wrapper.vhd"
+set file "$origin_dir/src/top.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
@@ -256,8 +267,7 @@ set_property -name "file_type" -value "VHDL" -objects $file_obj
 
 # Set 'sources_1' fileset properties
 set obj [get_filesets sources_1]
-set_property -name "top" -value "top_wrapper" -objects $obj
-set_property -name "top_auto_set" -value "0" -objects $obj
+set_property -name "top" -value "top" -objects $obj
 
 # Create 'constrs_1' fileset (if not found)
 if {[string equal [get_filesets -quiet constrs_1] ""]} {
@@ -382,6 +392,7 @@ if {[string equal [get_filesets -quiet sim_4] ""]} {
 set obj [get_filesets sim_4]
 set files [list \
  [file normalize "${origin_dir}/src/tb/top_tb.vhd"] \
+ [file normalize "${origin_dir}/src/wf_config/tb_top.wcfg"] \
 ]
 add_files -norecurse -fileset $obj $files
 
@@ -397,7 +408,7 @@ set_property -name "file_type" -value "VHDL" -objects $file_obj
 
 # Set 'sim_4' fileset properties
 set obj [get_filesets sim_4]
-set_property -name "sim_mode" -value "post-implementation" -objects $obj
+set_property -name "nl.mode" -value "funcsim" -objects $obj
 set_property -name "top" -value "tb" -objects $obj
 set_property -name "top_auto_set" -value "0" -objects $obj
 set_property -name "top_lib" -value "xil_defaultlib" -objects $obj
@@ -408,614 +419,6 @@ set obj [get_filesets utils_1]
 
 # Set 'utils_1' fileset properties
 set obj [get_filesets utils_1]
-
-
-# Adding sources referenced in BDs, if not already added
-if { [get_files common_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
-}
-if { [get_files uart_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
-}
-if { [get_files uart_rx_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip.vhd"
-}
-if { [get_files uart_rx_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip_wrapper.vhd"
-}
-if { [get_files deserializer_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip.vhd"
-}
-if { [get_files deserializer_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip_wrapper.vhd"
-}
-if { [get_files common_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
-}
-if { [get_files uart_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
-}
-if { [get_files uart_rx_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip.vhd"
-}
-if { [get_files uart_rx_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_rx_ip_wrapper.vhd"
-}
-if { [get_files common_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
-}
-if { [get_files uart_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
-}
-if { [get_files deserializer_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip.vhd"
-}
-if { [get_files deserializer_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/deserializer_ip_wrapper.vhd"
-}
-
-
-# Proc to create BD receiver
-proc cr_bd_receiver { parentCell } {
-# The design that will be created by this Tcl proc contains the following 
-# module references:
-# deserializer_ip_wrapper, uart_rx_ip_wrapper
-
-
-
-  # CHANGE DESIGN NAME HERE
-  set design_name receiver
-
-  common::send_gid_msg -ssname BD::TCL -id 2010 -severity "INFO" "Currently there is no design <$design_name> in project, so creating one..."
-
-  create_bd_design $design_name
-
-  set bCheckIPsPassed 1
-  ##################################################################
-  # CHECK Modules
-  ##################################################################
-  set bCheckModules 1
-  if { $bCheckModules == 1 } {
-     set list_check_mods "\ 
-  deserializer_ip_wrapper\
-  uart_rx_ip_wrapper\
-  "
-
-   set list_mods_missing ""
-   common::send_gid_msg -ssname BD::TCL -id 2020 -severity "INFO" "Checking if the following modules exist in the project's sources: $list_check_mods ."
-
-   foreach mod_vlnv $list_check_mods {
-      if { [can_resolve_reference $mod_vlnv] == 0 } {
-         lappend list_mods_missing $mod_vlnv
-      }
-   }
-
-   if { $list_mods_missing ne "" } {
-      catch {common::send_gid_msg -ssname BD::TCL -id 2021 -severity "ERROR" "The following module(s) are not found in the project: $list_mods_missing" }
-      common::send_gid_msg -ssname BD::TCL -id 2022 -severity "INFO" "Please add source files for the missing module(s) above."
-      set bCheckIPsPassed 0
-   }
-}
-
-  if { $bCheckIPsPassed != 1 } {
-    common::send_gid_msg -ssname BD::TCL -id 2023 -severity "WARNING" "Will not continue with creation of design due to the error(s) above."
-    return 3
-  }
-
-  variable script_folder
-
-  if { $parentCell eq "" } {
-     set parentCell [get_bd_cells /]
-  }
-
-  # Get object for parentCell
-  set parentObj [get_bd_cells $parentCell]
-  if { $parentObj == "" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2090 -severity "ERROR" "Unable to find parent cell <$parentCell>!"}
-     return
-  }
-
-  # Make sure parentObj is hier blk
-  set parentType [get_property TYPE $parentObj]
-  if { $parentType ne "hier" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2091 -severity "ERROR" "Parent <$parentObj> has TYPE = <$parentType>. Expected to be <hier>."}
-     return
-  }
-
-  # Save current instance; Restore later
-  set oldCurInst [current_bd_instance .]
-
-  # Set parent object as current
-  current_bd_instance $parentObj
-
-
-  # Create interface ports
-
-  # Create ports
-  set i_ckin [ create_bd_port -dir I i_ckin ]
-  set i_rst [ create_bd_port -dir I i_rst ]
-  set i_rx [ create_bd_port -dir I i_rx ]
-  set o_word [ create_bd_port -dir O -from 127 -to 0 o_word ]
-  set o_word_valid [ create_bd_port -dir O o_word_valid ]
-
-  # Create instance: deserializer_ip_wrap_0, and set properties
-  set block_name deserializer_ip_wrapper
-  set block_cell_name deserializer_ip_wrap_0
-  if { [catch {set deserializer_ip_wrap_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   } elseif { $deserializer_ip_wrap_0 eq "" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   }
-  
-  # Create instance: uart_rx_ip_wrapper_0, and set properties
-  set block_name uart_rx_ip_wrapper
-  set block_cell_name uart_rx_ip_wrapper_0
-  if { [catch {set uart_rx_ip_wrapper_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   } elseif { $uart_rx_ip_wrapper_0 eq "" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   }
-  
-  # Create port connections
-  connect_bd_net -net Net [get_bd_ports i_rst] [get_bd_pins deserializer_ip_wrap_0/i_rst] [get_bd_pins uart_rx_ip_wrapper_0/i_rst]
-  connect_bd_net -net ckdiv_ip_0_o_ckout [get_bd_ports i_ckin] [get_bd_pins deserializer_ip_wrap_0/i_ck] [get_bd_pins uart_rx_ip_wrapper_0/i_ck]
-  connect_bd_net -net deserializer_ip_wrap_0_o_data_seen [get_bd_pins deserializer_ip_wrap_0/o_data_seen] [get_bd_pins uart_rx_ip_wrapper_0/i_data_seen]
-  connect_bd_net -net deserializer_ip_wrap_0_o_word [get_bd_ports o_word] [get_bd_pins deserializer_ip_wrap_0/o_word]
-  connect_bd_net -net deserializer_ip_wrap_0_o_word_ready [get_bd_ports o_word_valid] [get_bd_pins deserializer_ip_wrap_0/o_word_valid]
-  connect_bd_net -net i_rx_1 [get_bd_ports i_rx] [get_bd_pins uart_rx_ip_wrapper_0/i_rx]
-  connect_bd_net -net uart_rx_ip_wrapper_0_o_data_out [get_bd_pins deserializer_ip_wrap_0/i_byte] [get_bd_pins uart_rx_ip_wrapper_0/o_data_out]
-  connect_bd_net -net uart_rx_ip_wrapper_0_o_data_valid [get_bd_pins deserializer_ip_wrap_0/i_byte_valid] [get_bd_pins uart_rx_ip_wrapper_0/o_data_valid]
-
-  # Create address segments
-
-
-  # Restore current instance
-  current_bd_instance $oldCurInst
-
-  validate_bd_design
-  save_bd_design
-  close_bd_design $design_name 
-}
-# End of cr_bd_receiver()
-cr_bd_receiver ""
-set_property REGISTERED_WITH_MANAGER "1" [get_files receiver.bd ] 
-set_property SYNTH_CHECKPOINT_MODE "Hierarchical" [get_files receiver.bd ] 
-
-if { [get_files common_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
-}
-if { [get_files uart_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
-}
-if { [get_files uart_tx_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_tx_ip.vhd"
-}
-if { [get_files uart_tx_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_tx_ip_wrapper.vhd"
-}
-if { [get_files serializer_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip.vhd"
-}
-if { [get_files serializer_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip_wrapper.vhd"
-}
-if { [get_files common_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
-}
-if { [get_files uart_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
-}
-if { [get_files uart_tx_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_tx_ip.vhd"
-}
-if { [get_files uart_tx_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_tx_ip_wrapper.vhd"
-}
-if { [get_files common_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
-}
-if { [get_files uart_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/uart_pkg.vhd"
-}
-if { [get_files serializer_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip.vhd"
-}
-if { [get_files serializer_ip_wrapper.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/serializer_ip_wrapper.vhd"
-}
-
-
-# Proc to create BD transmitter
-proc cr_bd_transmitter { parentCell } {
-# The design that will be created by this Tcl proc contains the following 
-# module references:
-# serializer_ip_wrapper, uart_tx_ip_wrapper
-
-
-
-  # CHANGE DESIGN NAME HERE
-  set design_name transmitter
-
-  common::send_gid_msg -ssname BD::TCL -id 2010 -severity "INFO" "Currently there is no design <$design_name> in project, so creating one..."
-
-  create_bd_design $design_name
-
-  set bCheckIPsPassed 1
-  ##################################################################
-  # CHECK Modules
-  ##################################################################
-  set bCheckModules 1
-  if { $bCheckModules == 1 } {
-     set list_check_mods "\ 
-  serializer_ip_wrapper\
-  uart_tx_ip_wrapper\
-  "
-
-   set list_mods_missing ""
-   common::send_gid_msg -ssname BD::TCL -id 2020 -severity "INFO" "Checking if the following modules exist in the project's sources: $list_check_mods ."
-
-   foreach mod_vlnv $list_check_mods {
-      if { [can_resolve_reference $mod_vlnv] == 0 } {
-         lappend list_mods_missing $mod_vlnv
-      }
-   }
-
-   if { $list_mods_missing ne "" } {
-      catch {common::send_gid_msg -ssname BD::TCL -id 2021 -severity "ERROR" "The following module(s) are not found in the project: $list_mods_missing" }
-      common::send_gid_msg -ssname BD::TCL -id 2022 -severity "INFO" "Please add source files for the missing module(s) above."
-      set bCheckIPsPassed 0
-   }
-}
-
-  if { $bCheckIPsPassed != 1 } {
-    common::send_gid_msg -ssname BD::TCL -id 2023 -severity "WARNING" "Will not continue with creation of design due to the error(s) above."
-    return 3
-  }
-
-  variable script_folder
-
-  if { $parentCell eq "" } {
-     set parentCell [get_bd_cells /]
-  }
-
-  # Get object for parentCell
-  set parentObj [get_bd_cells $parentCell]
-  if { $parentObj == "" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2090 -severity "ERROR" "Unable to find parent cell <$parentCell>!"}
-     return
-  }
-
-  # Make sure parentObj is hier blk
-  set parentType [get_property TYPE $parentObj]
-  if { $parentType ne "hier" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2091 -severity "ERROR" "Parent <$parentObj> has TYPE = <$parentType>. Expected to be <hier>."}
-     return
-  }
-
-  # Save current instance; Restore later
-  set oldCurInst [current_bd_instance .]
-
-  # Set parent object as current
-  current_bd_instance $parentObj
-
-
-  # Create interface ports
-
-  # Create ports
-  set i_ck [ create_bd_port -dir I i_ck ]
-  set i_rst [ create_bd_port -dir I i_rst ]
-  set i_transmit [ create_bd_port -dir I i_transmit ]
-  set i_word [ create_bd_port -dir I -from 127 -to 0 i_word ]
-  set o_tx [ create_bd_port -dir O o_tx ]
-
-  # Create instance: serializer_ip_wrapper_0, and set properties
-  set block_name serializer_ip_wrapper
-  set block_cell_name serializer_ip_wrapper_0
-  if { [catch {set serializer_ip_wrapper_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   } elseif { $serializer_ip_wrapper_0 eq "" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   }
-  
-  # Create instance: uart_tx_ip_wrapper_0, and set properties
-  set block_name uart_tx_ip_wrapper
-  set block_cell_name uart_tx_ip_wrapper_0
-  if { [catch {set uart_tx_ip_wrapper_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   } elseif { $uart_tx_ip_wrapper_0 eq "" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   }
-  
-  # Create port connections
-  connect_bd_net -net i_ck_1 [get_bd_ports i_ck] [get_bd_pins serializer_ip_wrapper_0/i_ck] [get_bd_pins uart_tx_ip_wrapper_0/i_ck]
-  connect_bd_net -net i_rst_1 [get_bd_ports i_rst] [get_bd_pins serializer_ip_wrapper_0/i_rst] [get_bd_pins uart_tx_ip_wrapper_0/i_rst]
-  connect_bd_net -net i_transmit_1 [get_bd_ports i_transmit] [get_bd_pins serializer_ip_wrapper_0/i_transmit]
-  connect_bd_net -net i_word_1 [get_bd_ports i_word] [get_bd_pins serializer_ip_wrapper_0/i_word]
-  connect_bd_net -net serializer_ip_wrapper_0_o_byte [get_bd_pins serializer_ip_wrapper_0/o_byte] [get_bd_pins uart_tx_ip_wrapper_0/i_data_in]
-  connect_bd_net -net serializer_ip_wrapper_0_o_byte_valid [get_bd_pins serializer_ip_wrapper_0/o_byte_valid] [get_bd_pins uart_tx_ip_wrapper_0/i_data_valid]
-  connect_bd_net -net uart_tx_ip_wrapper_0_o_busy [get_bd_pins serializer_ip_wrapper_0/i_tx_busy] [get_bd_pins uart_tx_ip_wrapper_0/o_busy]
-  connect_bd_net -net uart_tx_ip_wrapper_0_o_tx [get_bd_ports o_tx] [get_bd_pins uart_tx_ip_wrapper_0/o_tx]
-
-  # Create address segments
-
-
-  # Restore current instance
-  current_bd_instance $oldCurInst
-
-  validate_bd_design
-  save_bd_design
-  close_bd_design $design_name 
-}
-# End of cr_bd_transmitter()
-cr_bd_transmitter ""
-set_property REGISTERED_WITH_MANAGER "1" [get_files transmitter.bd ] 
-set_property SYNTH_CHECKPOINT_MODE "Hierarchical" [get_files transmitter.bd ] 
-
-if { [get_files common_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/common_pkg.vhd"
-}
-if { [get_files aes_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/aes_pkg.vhd"
-}
-if { [get_files utils.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/utils.vhd"
-}
-if { [get_files aes_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/aes_ip.vhd"
-}
-if { [get_files ckdiv_ip.vhd] == "" } {
-  import_files -quiet -fileset sources_1 "$origin_dir/src/ckdiv_ip.vhd"
-}
-
-
-# Proc to create BD top
-proc cr_bd_top { parentCell } {
-# The design that will be created by this Tcl proc contains the following 
-# module references:
-# aes_ip, ckdiv_ip
-
-
-# The design that will be created by this Tcl proc contains the following 
-# block design container source references:
-# receiver, transmitter
-
-
-
-  # CHANGE DESIGN NAME HERE
-  set design_name top
-
-  common::send_gid_msg -ssname BD::TCL -id 2010 -severity "INFO" "Currently there is no design <$design_name> in project, so creating one..."
-
-  create_bd_design $design_name
-
-  set bCheckIPsPassed 1
-  ##################################################################
-  # CHECK Modules
-  ##################################################################
-  set bCheckModules 1
-  if { $bCheckModules == 1 } {
-     set list_check_mods "\ 
-  aes_ip\
-  ckdiv_ip\
-  "
-
-   set list_mods_missing ""
-   common::send_gid_msg -ssname BD::TCL -id 2020 -severity "INFO" "Checking if the following modules exist in the project's sources: $list_check_mods ."
-
-   foreach mod_vlnv $list_check_mods {
-      if { [can_resolve_reference $mod_vlnv] == 0 } {
-         lappend list_mods_missing $mod_vlnv
-      }
-   }
-
-   if { $list_mods_missing ne "" } {
-      catch {common::send_gid_msg -ssname BD::TCL -id 2021 -severity "ERROR" "The following module(s) are not found in the project: $list_mods_missing" }
-      common::send_gid_msg -ssname BD::TCL -id 2022 -severity "INFO" "Please add source files for the missing module(s) above."
-      set bCheckIPsPassed 0
-   }
-}
-
-  ##################################################################
-  # CHECK Block Design Container Sources
-  ##################################################################
-  set bCheckSources 1
-  set list_bdc_active "receiver, transmitter"
-
-  array set map_bdc_missing {}
-  set map_bdc_missing(ACTIVE) ""
-  set map_bdc_missing(BDC) ""
-
-  if { $bCheckSources == 1 } {
-     set list_check_srcs "\ 
-  receiver \
-  transmitter \
-  "
-
-   common::send_gid_msg -ssname BD::TCL -id 2056 -severity "INFO" "Checking if the following sources for block design container exist in the project: $list_check_srcs .\n\n"
-
-   foreach src $list_check_srcs {
-      if { [can_resolve_reference $src] == 0 } {
-         if { [lsearch $list_bdc_active $src] != -1 } {
-            set map_bdc_missing(ACTIVE) "$map_bdc_missing(ACTIVE) $src"
-         } else {
-            set map_bdc_missing(BDC) "$map_bdc_missing(BDC) $src"
-         }
-      }
-   }
-
-   if { [llength $map_bdc_missing(ACTIVE)] > 0 } {
-      catch {common::send_gid_msg -ssname BD::TCL -id 2057 -severity "ERROR" "The following source(s) of Active variants are not found in the project: $map_bdc_missing(ACTIVE)" }
-      common::send_gid_msg -ssname BD::TCL -id 2060 -severity "INFO" "Please add source files for the missing source(s) above."
-      set bCheckIPsPassed 0
-   }
-   if { [llength $map_bdc_missing(BDC)] > 0 } {
-      catch {common::send_gid_msg -ssname BD::TCL -id 2059 -severity "WARNING" "The following source(s) of variants are not found in the project: $map_bdc_missing(BDC)" }
-      common::send_gid_msg -ssname BD::TCL -id 2060 -severity "INFO" "Please add source files for the missing source(s) above."
-   }
-}
-
-  if { $bCheckIPsPassed != 1 } {
-    common::send_gid_msg -ssname BD::TCL -id 2023 -severity "WARNING" "Will not continue with creation of design due to the error(s) above."
-    return 3
-  }
-
-  variable script_folder
-
-  if { $parentCell eq "" } {
-     set parentCell [get_bd_cells /]
-  }
-
-  # Get object for parentCell
-  set parentObj [get_bd_cells $parentCell]
-  if { $parentObj == "" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2090 -severity "ERROR" "Unable to find parent cell <$parentCell>!"}
-     return
-  }
-
-  # Make sure parentObj is hier blk
-  set parentType [get_property TYPE $parentObj]
-  if { $parentType ne "hier" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2091 -severity "ERROR" "Parent <$parentObj> has TYPE = <$parentType>. Expected to be <hier>."}
-     return
-  }
-
-  # Save current instance; Restore later
-  set oldCurInst [current_bd_instance .]
-
-  # Set parent object as current
-  current_bd_instance $parentObj
-
-
-  # Create interface ports
-
-  # Create ports
-  set i_ckin [ create_bd_port -dir I i_ckin ]
-  set i_rst [ create_bd_port -dir I i_rst ]
-  set i_rx [ create_bd_port -dir I i_rx ]
-  set i_transmit [ create_bd_port -dir I i_transmit ]
-  set o_tx [ create_bd_port -dir O o_tx ]
-
-  # Create instance: aes_ip_0, and set properties
-  set block_name aes_ip
-  set block_cell_name aes_ip_0
-  if { [catch {set aes_ip_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   } elseif { $aes_ip_0 eq "" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   }
-  
-  # Create instance: ckdiv_ip_0, and set properties
-  set block_name ckdiv_ip
-  set block_cell_name ckdiv_ip_0
-  if { [catch {set ckdiv_ip_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   } elseif { $ckdiv_ip_0 eq "" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   }
-  
-  # Create instance: receiver_0, and set properties
-  set receiver_0 [ create_bd_cell -type container -reference receiver receiver_0 ]
-  set_property -dict [ list \
-   CONFIG.ACTIVE_SIM_BD {receiver.bd} \
-   CONFIG.ACTIVE_SYNTH_BD {receiver.bd} \
-   CONFIG.ENABLE_DFX {0} \
-   CONFIG.LIST_SIM_BD {receiver.bd} \
-   CONFIG.LIST_SYNTH_BD {receiver.bd} \
-   CONFIG.LOCK_PROPAGATE {0} \
- ] $receiver_0
-
-  # Create instance: transmitter_0, and set properties
-  set transmitter_0 [ create_bd_cell -type container -reference transmitter transmitter_0 ]
-  set_property -dict [ list \
-   CONFIG.ACTIVE_SIM_BD {transmitter.bd} \
-   CONFIG.ACTIVE_SYNTH_BD {transmitter.bd} \
-   CONFIG.ENABLE_DFX {0} \
-   CONFIG.LIST_SIM_BD {transmitter.bd} \
-   CONFIG.LIST_SYNTH_BD {transmitter.bd} \
-   CONFIG.LOCK_PROPAGATE {0} \
- ] $transmitter_0
-
-  # Create port connections
-  connect_bd_net -net ckdiv_ip_0_o_ckout [get_bd_pins aes_ip_0/i_ck] [get_bd_pins ckdiv_ip_0/o_ckout] [get_bd_pins receiver_0/i_ckin] [get_bd_pins transmitter_0/i_ck]
-  connect_bd_net -net i_ckin_1 [get_bd_ports i_ckin] [get_bd_pins ckdiv_ip_0/i_ck]
-  connect_bd_net -net i_rst_1 [get_bd_ports i_rst] [get_bd_pins aes_ip_0/i_rst] [get_bd_pins receiver_0/i_rst] [get_bd_pins transmitter_0/i_rst]
-  connect_bd_net -net i_rx_1 [get_bd_ports i_rx] [get_bd_pins receiver_0/i_rx]
-  connect_bd_net -net i_transmit_1 [get_bd_ports i_transmit] [get_bd_pins transmitter_0/i_transmit]
-  connect_bd_net -net i_word_1 [get_bd_pins aes_ip_0/o_textout] [get_bd_pins transmitter_0/i_word]
-  connect_bd_net -net receiver_0_o_word [get_bd_pins aes_ip_0/i_textin] [get_bd_pins receiver_0/o_word]
-  connect_bd_net -net receiver_0_o_word_valid [get_bd_pins aes_ip_0/i_enable] [get_bd_pins receiver_0/o_word_valid]
-  connect_bd_net -net transmitter_0_o_tx [get_bd_ports o_tx] [get_bd_pins transmitter_0/o_tx]
-
-  # Create address segments
-
-
-  # Restore current instance
-  current_bd_instance $oldCurInst
-
-  validate_bd_design
-  save_bd_design
-  close_bd_design $design_name 
-}
-# End of cr_bd_top()
-cr_bd_top ""
-set_property REGISTERED_WITH_MANAGER "1" [get_files top.bd ] 
-set_property SYNTH_CHECKPOINT_MODE "Hierarchical" [get_files top.bd ] 
-
-
-# Create wrapper file for top.bd
-make_wrapper -files [get_files top.bd] -import -top
-
-
-# Create wrapper file for receiver.bd
-make_wrapper -files [get_files receiver.bd] -import -top
-
-
-# Create wrapper file for transmitter.bd
-make_wrapper -files [get_files transmitter.bd] -import -top
-
-generate_target all [get_files top.bd]
-
-generate_target all [get_files receiver.bd]
-
-generate_target all [get_files transmitter.bd]
-
-# Set 'receiver_inst_0' fileset object
-set obj [get_filesets receiver_inst_0]
-# Set 'receiver_inst_0' fileset file properties for remote files
-# None
-
-# Set 'receiver_inst_0' fileset file properties for local files
-# None
-
-# Set 'receiver_inst_0' fileset properties
-set obj [get_filesets receiver_inst_0]
-set_property -name "top" -value "receiver_inst_0" -objects $obj
-set_property -name "top_auto_set" -value "0" -objects $obj
-
-# Set 'transmitter_inst_0' fileset object
-set obj [get_filesets transmitter_inst_0]
-# Set 'transmitter_inst_0' fileset file properties for remote files
-# None
-
-# Set 'transmitter_inst_0' fileset file properties for local files
-# None
-
-# Set 'transmitter_inst_0' fileset properties
-set obj [get_filesets transmitter_inst_0]
-set_property -name "top" -value "transmitter_inst_0" -objects $obj
-set_property -name "top_auto_set" -value "0" -objects $obj
 
 set idrFlowPropertiesConstraints ""
 catch {
@@ -1068,6 +471,7 @@ set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_init_report_tim
 if { $obj != "" } {
 set_property -name "is_enabled" -value "0" -objects $obj
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 
 }
 # Create 'impl_1_opt_report_drc_0' report (if not found)
@@ -1086,6 +490,7 @@ set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_opt_report_timi
 if { $obj != "" } {
 set_property -name "is_enabled" -value "0" -objects $obj
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 
 }
 # Create 'impl_1_power_opt_report_timing_summary_0' report (if not found)
@@ -1096,6 +501,7 @@ set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_power_opt_repor
 if { $obj != "" } {
 set_property -name "is_enabled" -value "0" -objects $obj
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 
 }
 # Create 'impl_1_place_report_io_0' report (if not found)
@@ -1149,6 +555,7 @@ set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_place_report_ti
 if { $obj != "" } {
 set_property -name "is_enabled" -value "0" -objects $obj
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 
 }
 # Create 'impl_1_post_place_power_opt_report_timing_summary_0' report (if not found)
@@ -1159,6 +566,7 @@ set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_post_place_powe
 if { $obj != "" } {
 set_property -name "is_enabled" -value "0" -objects $obj
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 
 }
 # Create 'impl_1_phys_opt_report_timing_summary_0' report (if not found)
@@ -1169,6 +577,7 @@ set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_phys_opt_report
 if { $obj != "" } {
 set_property -name "is_enabled" -value "0" -objects $obj
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 
 }
 # Create 'impl_1_route_report_drc_0' report (if not found)
@@ -1210,6 +619,7 @@ if { [ string equal [get_report_configs -of_objects [get_runs impl_1] impl_1_rou
 set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_route_report_timing_summary_0]
 if { $obj != "" } {
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 
 }
 # Create 'impl_1_route_report_incremental_reuse_0' report (if not found)
@@ -1244,6 +654,7 @@ if { [ string equal [get_report_configs -of_objects [get_runs impl_1] impl_1_pos
 set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_post_route_phys_opt_report_timing_summary_0]
 if { $obj != "" } {
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 set_property -name "options.warn_on_violation" -value "1" -objects $obj
 
 }
